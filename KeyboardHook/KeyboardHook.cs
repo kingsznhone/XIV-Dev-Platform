@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace KeyboardHook
 {
-    class KeyboardHook
+    public class KeyboardHook
     {
         //钩子类型：键盘
         private const int WH_KEYBOARD_LL = 13; //全局钩子键盘为13，线程钩子键盘为2
