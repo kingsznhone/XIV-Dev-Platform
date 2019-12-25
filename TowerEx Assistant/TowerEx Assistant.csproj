@@ -76,6 +76,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Keyboard">
+      <HintPath>..\Keyboard\bin\Debug\Keyboard.dll</HintPath>
+    </Reference>
     <Reference Include="MemoryReader">
       <HintPath>..\MemoryReader\bin\Debug\MemoryReader.dll</HintPath>
     </Reference>
@@ -93,6 +96,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Configuration.settings</DependentUpon>
+    </Compile>
+    <Compile Include="AppHotKey.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="InputCoordName.cs">
       <SubType>Form</SubType>
@@ -127,6 +136,10 @@
     </Compile>
     <None Include="app.manifest">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Configuration.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Configuration.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

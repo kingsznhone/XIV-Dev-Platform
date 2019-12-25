@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryApi", "MemoryReader\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloodletter Fantasy", "Bloodletter Fantasy\Bloodletter Fantasy.csproj", "{08F8D101-BF41-4967-97B6-4188DF10D84E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIV Keyboard Dynamic(Experimental)", "FF14 Keyboard Dynamic\XIV Keyboard Dynamic(Experimental).csproj", "{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja Fantasy", "Ninja Fantasy\Ninja Fantasy.csproj", "{ECF73AD0-B6E3-45AA-9E61-490052ED270E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowerEx Assistant", "TowerEx Assistant\TowerEx Assistant.csproj", "{793F523B-714B-4D0C-9534-47B6EA940A96}"
@@ -22,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HuntingRadar", "HuntingRadar\HuntingRadar.csproj", "{57243252-4A5A-41F5-9409-7164DC1DD5E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACTHacker", "ACTHacker\ACTHacker.csproj", "{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardHook", "KeyboardHook\KeyboardHook.csproj", "{B29730D6-6571-4298-BF41-DAED42AB8B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +47,6 @@ Global
 		{08F8D101-BF41-4967-97B6-4188DF10D84E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08F8D101-BF41-4967-97B6-4188DF10D84E}.Release|x64.ActiveCfg = Release|x64
 		{08F8D101-BF41-4967-97B6-4188DF10D84E}.Release|x64.Build.0 = Release|x64
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Debug|x64.ActiveCfg = Debug|x64
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Debug|x64.Build.0 = Debug|x64
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Release|x64.ActiveCfg = Release|x64
-		{5EE5F54A-7477-42B2-82B0-872BB4ACF70C}.Release|x64.Build.0 = Release|x64
 		{ECF73AD0-B6E3-45AA-9E61-490052ED270E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECF73AD0-B6E3-45AA-9E61-490052ED270E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF73AD0-B6E3-45AA-9E61-490052ED270E}.Debug|x64.ActiveCfg = Debug|x64
@@ -111,6 +103,14 @@ Global
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.ActiveCfg = Release|Any CPU
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.Build.0 = Release|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|x64.Build.0 = Debug|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|x64.ActiveCfg = Release|Any CPU
+		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

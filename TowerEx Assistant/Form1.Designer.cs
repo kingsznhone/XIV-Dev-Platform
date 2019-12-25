@@ -58,7 +58,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.Pvalue = new System.Windows.Forms.Label();
             this.RollBackBtn = new System.Windows.Forms.Button();
-            this.MaxdistAlert = new System.Windows.Forms.Label();
+            this.MaxDistAlert = new System.Windows.Forms.Label();
             this.ResetBtn = new System.Windows.Forms.Button();
             this.DestX = new System.Windows.Forms.Label();
             this.DestY = new System.Windows.Forms.Label();
@@ -75,6 +75,11 @@
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.CopyCoord = new System.Windows.Forms.Button();
             this.MapIDLabel = new System.Windows.Forms.Label();
+            this.CoordLock = new System.Windows.Forms.CheckBox();
+            this.checkCtrl = new System.Windows.Forms.CheckBox();
+            this.checkAlt = new System.Windows.Forms.CheckBox();
+            this.checkShift = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleZ)).BeginInit();
@@ -89,7 +94,7 @@
             this.GameOn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.GameOn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.GameOn.ForeColor = System.Drawing.Color.Red;
-            this.GameOn.Location = new System.Drawing.Point(754, 45);
+            this.GameOn.Location = new System.Drawing.Point(924, 45);
             this.GameOn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GameOn.Name = "GameOn";
             this.GameOn.Size = new System.Drawing.Size(114, 29);
@@ -102,7 +107,7 @@
             this.TPBtn.Enabled = false;
             this.TPBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.TPBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TPBtn.Location = new System.Drawing.Point(768, 562);
+            this.TPBtn.Location = new System.Drawing.Point(958, 687);
             this.TPBtn.Name = "TPBtn";
             this.TPBtn.Size = new System.Drawing.Size(100, 35);
             this.TPBtn.TabIndex = 1;
@@ -117,7 +122,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(561, 566);
+            this.label1.Location = new System.Drawing.Point(772, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 27);
             this.label1.TabIndex = 2;
@@ -126,7 +131,7 @@
             // XLabel
             // 
             this.XLabel.AutoSize = true;
-            this.XLabel.Location = new System.Drawing.Point(371, 146);
+            this.XLabel.Location = new System.Drawing.Point(371, 95);
             this.XLabel.Name = "XLabel";
             this.XLabel.Size = new System.Drawing.Size(54, 27);
             this.XLabel.TabIndex = 3;
@@ -135,7 +140,7 @@
             // YLabel
             // 
             this.YLabel.AutoSize = true;
-            this.YLabel.Location = new System.Drawing.Point(371, 176);
+            this.YLabel.Location = new System.Drawing.Point(371, 125);
             this.YLabel.Name = "YLabel";
             this.YLabel.Size = new System.Drawing.Size(53, 27);
             this.YLabel.TabIndex = 4;
@@ -144,7 +149,7 @@
             // ZLabel
             // 
             this.ZLabel.AutoSize = true;
-            this.ZLabel.Location = new System.Drawing.Point(371, 206);
+            this.ZLabel.Location = new System.Drawing.Point(371, 155);
             this.ZLabel.Name = "ZLabel";
             this.ZLabel.Size = new System.Drawing.Size(53, 27);
             this.ZLabel.TabIndex = 5;
@@ -153,7 +158,7 @@
             // RADLabel
             // 
             this.RADLabel.AutoSize = true;
-            this.RADLabel.Location = new System.Drawing.Point(373, 103);
+            this.RADLabel.Location = new System.Drawing.Point(507, 201);
             this.RADLabel.Name = "RADLabel";
             this.RADLabel.Size = new System.Drawing.Size(83, 27);
             this.RADLabel.TabIndex = 6;
@@ -162,7 +167,7 @@
             // DeltaX
             // 
             this.DeltaX.AutoSize = true;
-            this.DeltaX.Location = new System.Drawing.Point(507, 146);
+            this.DeltaX.Location = new System.Drawing.Point(507, 95);
             this.DeltaX.Name = "DeltaX";
             this.DeltaX.Size = new System.Drawing.Size(66, 27);
             this.DeltaX.TabIndex = 3;
@@ -171,7 +176,7 @@
             // DeltaY
             // 
             this.DeltaY.AutoSize = true;
-            this.DeltaY.Location = new System.Drawing.Point(507, 176);
+            this.DeltaY.Location = new System.Drawing.Point(507, 125);
             this.DeltaY.Name = "DeltaY";
             this.DeltaY.Size = new System.Drawing.Size(65, 27);
             this.DeltaY.TabIndex = 4;
@@ -180,7 +185,7 @@
             // DeltaZ
             // 
             this.DeltaZ.AutoSize = true;
-            this.DeltaZ.Location = new System.Drawing.Point(507, 206);
+            this.DeltaZ.Location = new System.Drawing.Point(507, 155);
             this.DeltaZ.Name = "DeltaZ";
             this.DeltaZ.Size = new System.Drawing.Size(65, 27);
             this.DeltaZ.TabIndex = 5;
@@ -188,29 +193,29 @@
             // 
             // MultipleX
             // 
-            this.MultipleX.Location = new System.Drawing.Point(426, 335);
+            this.MultipleX.Location = new System.Drawing.Point(420, 312);
             this.MultipleX.Maximum = 100;
             this.MultipleX.Minimum = -100;
             this.MultipleX.Name = "MultipleX";
-            this.MultipleX.Size = new System.Drawing.Size(328, 56);
+            this.MultipleX.Size = new System.Drawing.Size(457, 56);
             this.MultipleX.TabIndex = 7;
             this.MultipleX.TickFrequency = 10;
             this.MultipleX.Scroll += new System.EventHandler(this.MultipleX_Scroll);
             // 
             // MultipleY
             // 
-            this.MultipleY.Location = new System.Drawing.Point(426, 397);
+            this.MultipleY.Location = new System.Drawing.Point(420, 374);
             this.MultipleY.Maximum = 100;
             this.MultipleY.Minimum = -100;
             this.MultipleY.Name = "MultipleY";
-            this.MultipleY.Size = new System.Drawing.Size(328, 56);
+            this.MultipleY.Size = new System.Drawing.Size(457, 56);
             this.MultipleY.TabIndex = 8;
             this.MultipleY.TickFrequency = 10;
             this.MultipleY.Scroll += new System.EventHandler(this.MultipleY_Scroll);
             // 
             // MultipleZ
             // 
-            this.MultipleZ.Location = new System.Drawing.Point(819, 161);
+            this.MultipleZ.Location = new System.Drawing.Point(982, 275);
             this.MultipleZ.Maximum = 100;
             this.MultipleZ.Minimum = -100;
             this.MultipleZ.Name = "MultipleZ";
@@ -223,7 +228,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(361, 335);
+            this.label2.Location = new System.Drawing.Point(349, 312);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 27);
             this.label2.TabIndex = 10;
@@ -232,7 +237,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(361, 394);
+            this.label3.Location = new System.Drawing.Point(349, 374);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 27);
             this.label3.TabIndex = 11;
@@ -241,7 +246,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(804, 513);
+            this.label4.Location = new System.Drawing.Point(974, 627);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 27);
             this.label4.TabIndex = 12;
@@ -250,7 +255,7 @@
             // Xvalue
             // 
             this.Xvalue.AutoSize = true;
-            this.Xvalue.Location = new System.Drawing.Point(760, 335);
+            this.Xvalue.Location = new System.Drawing.Point(883, 312);
             this.Xvalue.Name = "Xvalue";
             this.Xvalue.Size = new System.Drawing.Size(24, 27);
             this.Xvalue.TabIndex = 13;
@@ -259,7 +264,7 @@
             // Yvalue
             // 
             this.Yvalue.AutoSize = true;
-            this.Yvalue.Location = new System.Drawing.Point(760, 394);
+            this.Yvalue.Location = new System.Drawing.Point(883, 374);
             this.Yvalue.Name = "Yvalue";
             this.Yvalue.Size = new System.Drawing.Size(24, 27);
             this.Yvalue.TabIndex = 13;
@@ -268,7 +273,7 @@
             // Zvalue
             // 
             this.Zvalue.AutoSize = true;
-            this.Zvalue.Location = new System.Drawing.Point(814, 131);
+            this.Zvalue.Location = new System.Drawing.Point(998, 245);
             this.Zvalue.Name = "Zvalue";
             this.Zvalue.Size = new System.Drawing.Size(24, 27);
             this.Zvalue.TabIndex = 13;
@@ -324,11 +329,11 @@
             // MultipleP
             // 
             this.MultipleP.Enabled = false;
-            this.MultipleP.Location = new System.Drawing.Point(426, 459);
+            this.MultipleP.Location = new System.Drawing.Point(420, 436);
             this.MultipleP.Maximum = 100;
             this.MultipleP.Minimum = -100;
             this.MultipleP.Name = "MultipleP";
-            this.MultipleP.Size = new System.Drawing.Size(328, 56);
+            this.MultipleP.Size = new System.Drawing.Size(457, 56);
             this.MultipleP.TabIndex = 8;
             this.MultipleP.TickFrequency = 10;
             this.MultipleP.Scroll += new System.EventHandler(this.MultipleP_Scroll);
@@ -336,7 +341,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(373, 459);
+            this.label5.Location = new System.Drawing.Point(349, 436);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 27);
             this.label5.TabIndex = 11;
@@ -345,7 +350,7 @@
             // Pvalue
             // 
             this.Pvalue.AutoSize = true;
-            this.Pvalue.Location = new System.Drawing.Point(760, 459);
+            this.Pvalue.Location = new System.Drawing.Point(883, 436);
             this.Pvalue.Name = "Pvalue";
             this.Pvalue.Size = new System.Drawing.Size(24, 27);
             this.Pvalue.TabIndex = 13;
@@ -357,7 +362,7 @@
             this.RollBackBtn.Enabled = false;
             this.RollBackBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.RollBackBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.RollBackBtn.Location = new System.Drawing.Point(354, 562);
+            this.RollBackBtn.Location = new System.Drawing.Point(354, 682);
             this.RollBackBtn.Name = "RollBackBtn";
             this.RollBackBtn.Size = new System.Drawing.Size(100, 35);
             this.RollBackBtn.TabIndex = 1;
@@ -365,25 +370,25 @@
             this.RollBackBtn.UseVisualStyleBackColor = false;
             this.RollBackBtn.Click += new System.EventHandler(this.RollBackBtn_Click);
             // 
-            // MaxdistAlert
+            // MaxDistAlert
             // 
-            this.MaxdistAlert.AutoSize = true;
-            this.MaxdistAlert.ForeColor = System.Drawing.Color.Crimson;
-            this.MaxdistAlert.Location = new System.Drawing.Point(428, 513);
-            this.MaxdistAlert.Name = "MaxdistAlert";
-            this.MaxdistAlert.Size = new System.Drawing.Size(316, 27);
-            this.MaxdistAlert.TabIndex = 15;
-            this.MaxdistAlert.Text = "野外水平瞬移超过15米会触发掉线";
-            this.MaxdistAlert.Visible = false;
+            this.MaxDistAlert.AutoSize = true;
+            this.MaxDistAlert.ForeColor = System.Drawing.Color.Crimson;
+            this.MaxDistAlert.Location = new System.Drawing.Point(483, 495);
+            this.MaxDistAlert.Name = "MaxDistAlert";
+            this.MaxDistAlert.Size = new System.Drawing.Size(316, 27);
+            this.MaxDistAlert.TabIndex = 15;
+            this.MaxDistAlert.Text = "野外水平瞬移超过15米会触发掉线";
+            this.MaxDistAlert.Visible = false;
             // 
             // ResetBtn
             // 
             this.ResetBtn.BackColor = System.Drawing.SystemColors.Control;
             this.ResetBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.ResetBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ResetBtn.Location = new System.Drawing.Point(366, 268);
+            this.ResetBtn.Location = new System.Drawing.Point(354, 245);
             this.ResetBtn.Name = "ResetBtn";
-            this.ResetBtn.Size = new System.Drawing.Size(150, 35);
+            this.ResetBtn.Size = new System.Drawing.Size(114, 35);
             this.ResetBtn.TabIndex = 1;
             this.ResetBtn.Text = "重置滑竿";
             this.ResetBtn.UseVisualStyleBackColor = false;
@@ -392,7 +397,7 @@
             // DestX
             // 
             this.DestX.AutoSize = true;
-            this.DestX.Location = new System.Drawing.Point(638, 146);
+            this.DestX.Location = new System.Drawing.Point(638, 95);
             this.DestX.Name = "DestX";
             this.DestX.Size = new System.Drawing.Size(96, 27);
             this.DestX.TabIndex = 3;
@@ -401,7 +406,7 @@
             // DestY
             // 
             this.DestY.AutoSize = true;
-            this.DestY.Location = new System.Drawing.Point(639, 176);
+            this.DestY.Location = new System.Drawing.Point(639, 125);
             this.DestY.Name = "DestY";
             this.DestY.Size = new System.Drawing.Size(95, 27);
             this.DestY.TabIndex = 4;
@@ -410,7 +415,7 @@
             // DestZ
             // 
             this.DestZ.AutoSize = true;
-            this.DestZ.Location = new System.Drawing.Point(639, 206);
+            this.DestZ.Location = new System.Drawing.Point(639, 155);
             this.DestZ.Name = "DestZ";
             this.DestZ.Size = new System.Drawing.Size(95, 27);
             this.DestZ.TabIndex = 5;
@@ -492,13 +497,13 @@
             this.listBox.ItemHeight = 27;
             this.listBox.Location = new System.Drawing.Point(12, 185);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(312, 355);
+            this.listBox.Size = new System.Drawing.Size(312, 490);
             this.listBox.TabIndex = 18;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
             // SaveCoordBtn
             // 
-            this.SaveCoordBtn.Location = new System.Drawing.Point(224, 562);
+            this.SaveCoordBtn.Location = new System.Drawing.Point(224, 682);
             this.SaveCoordBtn.Name = "SaveCoordBtn";
             this.SaveCoordBtn.Size = new System.Drawing.Size(100, 35);
             this.SaveCoordBtn.TabIndex = 19;
@@ -508,7 +513,7 @@
             // 
             // DeleteBtn
             // 
-            this.DeleteBtn.Location = new System.Drawing.Point(12, 562);
+            this.DeleteBtn.Location = new System.Drawing.Point(12, 682);
             this.DeleteBtn.Name = "DeleteBtn";
             this.DeleteBtn.Size = new System.Drawing.Size(100, 35);
             this.DeleteBtn.TabIndex = 19;
@@ -521,7 +526,7 @@
             this.CopyCoord.BackColor = System.Drawing.SystemColors.Control;
             this.CopyCoord.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.CopyCoord.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CopyCoord.Location = new System.Drawing.Point(634, 268);
+            this.CopyCoord.Location = new System.Drawing.Point(733, 245);
             this.CopyCoord.Name = "CopyCoord";
             this.CopyCoord.Size = new System.Drawing.Size(150, 35);
             this.CopyCoord.TabIndex = 1;
@@ -532,23 +537,131 @@
             // MapIDLabel
             // 
             this.MapIDLabel.AutoSize = true;
-            this.MapIDLabel.Location = new System.Drawing.Point(638, 103);
+            this.MapIDLabel.Location = new System.Drawing.Point(361, 201);
             this.MapIDLabel.Name = "MapIDLabel";
             this.MapIDLabel.Size = new System.Drawing.Size(78, 27);
             this.MapIDLabel.TabIndex = 20;
             this.MapIDLabel.Text = "地图ID:";
             // 
+            // CoordLock
+            // 
+            this.CoordLock.AutoSize = true;
+            this.CoordLock.Location = new System.Drawing.Point(354, 574);
+            this.CoordLock.Name = "CoordLock";
+            this.CoordLock.Size = new System.Drawing.Size(114, 31);
+            this.CoordLock.TabIndex = 21;
+            this.CoordLock.Text = "按下锁定";
+            this.CoordLock.UseVisualStyleBackColor = true;
+            this.CoordLock.CheckedChanged += new System.EventHandler(this.CoordLock_CheckedChanged);
+            // 
+            // checkCtrl
+            // 
+            this.checkCtrl.AutoSize = true;
+            this.checkCtrl.Checked = true;
+            this.checkCtrl.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkCtrl.Location = new System.Drawing.Point(488, 574);
+            this.checkCtrl.Name = "checkCtrl";
+            this.checkCtrl.Size = new System.Drawing.Size(67, 31);
+            this.checkCtrl.TabIndex = 22;
+            this.checkCtrl.Text = "Ctrl";
+            this.checkCtrl.UseVisualStyleBackColor = true;
+            // 
+            // checkAlt
+            // 
+            this.checkAlt.AutoSize = true;
+            this.checkAlt.Location = new System.Drawing.Point(561, 574);
+            this.checkAlt.Name = "checkAlt";
+            this.checkAlt.Size = new System.Drawing.Size(60, 31);
+            this.checkAlt.TabIndex = 23;
+            this.checkAlt.Text = "Alt";
+            this.checkAlt.UseVisualStyleBackColor = true;
+            // 
+            // checkShift
+            // 
+            this.checkShift.AutoSize = true;
+            this.checkShift.Location = new System.Drawing.Point(627, 574);
+            this.checkShift.Name = "checkShift";
+            this.checkShift.Size = new System.Drawing.Size(77, 31);
+            this.checkShift.TabIndex = 24;
+            this.checkShift.Text = "Shift";
+            this.checkShift.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0",
+            "-",
+            "=",
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F9",
+            "F10",
+            "F11",
+            "F12"});
+            this.comboBox1.Location = new System.Drawing.Point(710, 570);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 35);
+            this.comboBox1.TabIndex = 25;
+            this.comboBox1.Text = "F";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(887, 611);
+            this.ClientSize = new System.Drawing.Size(1070, 734);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.checkShift);
+            this.Controls.Add(this.checkAlt);
+            this.Controls.Add(this.checkCtrl);
+            this.Controls.Add(this.CoordLock);
             this.Controls.Add(this.MapIDLabel);
             this.Controls.Add(this.DeleteBtn);
             this.Controls.Add(this.SaveCoordBtn);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.InputCoord);
-            this.Controls.Add(this.MaxdistAlert);
+            this.Controls.Add(this.MaxDistAlert);
             this.Controls.Add(this.ModeSelect);
             this.Controls.Add(this.Zvalue);
             this.Controls.Add(this.Pvalue);
@@ -626,7 +739,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label Pvalue;
         private System.Windows.Forms.Button RollBackBtn;
-        private System.Windows.Forms.Label MaxdistAlert;
+        private System.Windows.Forms.Label MaxDistAlert;
         private System.Windows.Forms.Button ResetBtn;
         private System.Windows.Forms.Label DestX;
         private System.Windows.Forms.Label DestY;
@@ -644,6 +757,11 @@
         private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Button CopyCoord;
         private System.Windows.Forms.Label MapIDLabel;
+        private System.Windows.Forms.CheckBox CoordLock;
+        private System.Windows.Forms.CheckBox checkCtrl;
+        private System.Windows.Forms.CheckBox checkAlt;
+        private System.Windows.Forms.CheckBox checkShift;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

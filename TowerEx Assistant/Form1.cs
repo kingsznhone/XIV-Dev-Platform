@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using KeyboardApi;
 using MemoryApi;
 
 namespace TowerEx_Assistant
@@ -18,11 +19,18 @@ namespace TowerEx_Assistant
     {
         [DllImport("user32.dll")] private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        bool CCSmode = true;
         Preset preset = new Preset();
 
         public IntPtr Gameptr;
-        IntPtr bytesOut;
+
+        private const int WM_HOTKEY = 0x312;
+        private const int WM_CREATE = 0x1;
+        private const int WM_DESTROY = 0x2;
+        private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_SYSKEYUP = 0x0105;
+        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYUP = 0x0101;
+        private const int HKID = 0x3721;
 
         const long Base_Offset = 0x1B24AF0;
         const long Offset_X = 0xA0;
@@ -42,10 +50,12 @@ namespace TowerEx_Assistant
         public Form1()
         {
             InitializeComponent();
+
             Thread Find = new Thread(new ThreadStart(Find_Game));
             Find.Start();
             LoadPreset();
             listBox.Enabled = true;
+            
         }
 
         public void Find_Game()
@@ -108,7 +118,7 @@ namespace TowerEx_Assistant
 
         public void CalcDelta()
         {
-            if (CCSmode == true)
+            if (CheckCCS.Checked == true)
             {
                 DeltaS.X = Convert.ToSingle(MultipleX.Value);
                 DeltaS.Y = Convert.ToSingle(MultipleY.Value);
@@ -141,6 +151,11 @@ namespace TowerEx_Assistant
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
+            if (CoordLock.Checked)
+            {
+                Teleport(CurrentCoord);
+            };
             ReadCoord();
             CalcDelta();
             CalcDest();
@@ -166,14 +181,11 @@ namespace TowerEx_Assistant
 
         public void Teleport(Coordinate C)
         {
-            byte[] buffer = BitConverter.GetBytes(C.X);
+            byte[] buffer = new byte[12];
+            Buffer.BlockCopy(BitConverter.GetBytes(C.X), 0, buffer, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(C.Z), 0, buffer, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(C.Y), 0, buffer, 8, 4);
             mReader.WriteByteArray((IntPtr)(pModule + Offset_X), buffer);
-
-            buffer = BitConverter.GetBytes(C.Y);
-            mReader.WriteByteArray((IntPtr)(pModule + Offset_Y), buffer);
-
-            buffer = BitConverter.GetBytes(C.Z);
-            mReader.WriteByteArray((IntPtr)(pModule + Offset_Z), buffer);
         }
 
         private void TP_Click(object sender, EventArgs e)
@@ -206,11 +218,11 @@ namespace TowerEx_Assistant
         {
             if (Math.Pow(MultipleX.Value, 2) + Math.Pow(MultipleY.Value, 2) >= 225 || Math.Abs(MultipleP.Value) >= 15)
             {
-                MaxdistAlert.Visible = true;
+                MaxDistAlert.Visible = true;
             }
             else
             {
-                MaxdistAlert.Visible = false;
+                MaxDistAlert.Visible = false;
             }
         }
 
@@ -260,7 +272,6 @@ namespace TowerEx_Assistant
         {
             if (CheckCCS.Checked == true)
             {
-                CCSmode = true;
                 MultipleX.Enabled = true;
                 MultipleY.Enabled = true;
                 MultipleZ.Enabled = true;
@@ -272,7 +283,6 @@ namespace TowerEx_Assistant
         {
             if (CheckPCS.Checked == true)
             {
-                CCSmode = false;
                 MultipleX.Enabled = false;
                 MultipleY.Enabled = false;
                 MultipleZ.Enabled = true;
@@ -284,7 +294,6 @@ namespace TowerEx_Assistant
         {
             if (CheckACS.Checked == true)
             {
-                CCSmode = false;
                 MultipleX.Enabled = false;
                 MultipleY.Enabled = false;
                 MultipleZ.Enabled = false;
@@ -363,5 +372,22 @@ namespace TowerEx_Assistant
             DirectY.Text = Convert.ToString(CurrentCoord.Y);
             DirectZ.Text = Convert.ToString(CurrentCoord.Z);
         }
+
+        private void CoordLock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CoordLock.Checked == true)
+            {
+                
+            }
+            else
+            {
+                AppHotKey.UnRegKey(Handle, HKID);
+            }
+  
+        }
+
+
+
+
     }
 }
