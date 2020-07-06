@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>自动进本助手</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+    <Prefer32Bit>True</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Speech">
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Speech\v4.0_4.0.0.0__31bf3856ad364e35\System.Speech.dll</HintPath>
+    </Reference>
+    <Reference Include="ScreenSearchApi">
+      <HintPath>C:\Users\KsMinnor\Documents\Tencent Files\840810814\FileRecv\自动进本助手\ScreenSearchApi.dll</HintPath>
+    </Reference>
+    <Reference Include="KeyboardApi">
+      <HintPath>C:\Users\KsMinnor\Documents\Tencent Files\840810814\FileRecv\自动进本助手\KeyboardApi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
