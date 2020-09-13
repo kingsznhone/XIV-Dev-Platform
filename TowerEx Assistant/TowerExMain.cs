@@ -10,15 +10,17 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using KeyboardApi;
-using MemoryApi;
+using ProcessMemoryApi;
+using System.Text.Json;
 
 namespace TowerEx_Assistant
 {
     public partial class TowerExMain : Form
     {
         [DllImport("user32.dll")] private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-        Preset preset = new Preset();
+        PicoHttpServer server;
         private KeyboardHook _keyboardHook = null;
         bool HotkeyPress = false;
         bool CtrlFlag = false;
@@ -37,13 +39,23 @@ namespace TowerEx_Assistant
         private const int WM_KEYUP = 0x0101;
         private const int HKID = 0x3721;
 
-        const long Base_Offset = 0x1B24AF0;
+        const long Base_Offset = 0x1C5E510;
+        private long Actual_Base_Offset;
+
+        private long pModule;
         const long Offset_X = 0xA0;
         const long Offset_Z = 0xA4;
         const long Offset_Y = 0xA8;
         const long Offset_RAD = 0xB0;
-        const long MAPID = 0x1A5C590;
-        long pModule;
+
+        private long ZoneIDPtr;
+        
+        
+
+        private long pFlyModule;
+        const long Fly_X =0x10;
+        const long Fly_Z=0x14;
+        const long Fly_Y = 0x18;
 
         Coordinate CurrentCoord = new Coordinate();
         Coordinate DeltaS = new Coordinate();
@@ -52,80 +64,93 @@ namespace TowerEx_Assistant
 
         ProcessMemoryReader mReader = new ProcessMemoryReader();
 
+        private XmlDocument CoordXML = new XmlDocument();
+        private XmlLoader loader;
+        private const string CoordDataPath = "CoordData.xml";
+
         public TowerExMain()
         {
             InitializeComponent();
-            LoadHookHotkey();
-            _keyboardHook = new KeyboardHook();
+            if (mReader.FindProcess("ffxiv_dx11"))
+            {
+                Process p = Process.GetProcessesByName("ffxiv_dx11").ToList().FirstOrDefault();
+                mReader.process = p;
+                mReader.OpenProcess();
 
+                Actual_Base_Offset = 0;
+                FindModulePtr(mReader);
 
-            Thread Find = new Thread(new ThreadStart(Find_Game));
-            Find.Start();
-            LoadPreset();
-            listBox.Enabled = true;
+                LoadHookHotkey();
+                _keyboardHook = new KeyboardHook();
+
+                loader = new XmlLoader();
+                Loadxml();
+
+                
+                timer1.Enabled = true;
+                int port = 7410;
+                server = new PicoHttpServer(port);
+                Thread Rx = new Thread(NetworkEvent);
+                Rx.Start();
+                NetworkStatus.Text = string.Format("正在监听本地端口{0}", port);
+            }
+            else 
+            { 
+                MessageBox.Show("游戏未运行", "严重错误：上溢", MessageBoxButtons.OK);
+                Environment.Exit(0); 
+            }
+
         }
 
-        public void Find_Game()
+        public void FindModulePtr(ProcessMemoryReader mReader)
         {
-            while (true)
+            string Movepattern = "f30f105b40488d5424304C8b4318488d0d";
+            string Mappattern2 = "f30f1043044c8d836cffffff0fb705";
+            SignatureScanner signatureScanner = new SignatureScanner(mReader);
+            Actual_Base_Offset = (long)signatureScanner.ScanMovePtr(Movepattern)[0];
+            ZoneIDPtr = (long)signatureScanner.ScanPtrBySig(Mappattern2)[0];
+            if (Base_Offset != Actual_Base_Offset)
             {
-                Thread.Sleep(3000);
-                if (mReader.FindProcess("ffxiv_dx11"))
+                DialogResult dialogResult = MessageBox.Show("基址不一致，是否使用增强扫描？", "沙沙沙沙……时空狭缝不需要能量吗？", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    Process p = Process.GetProcessesByName("ffxiv_dx11").ToList().FirstOrDefault();
-                    mReader.process = p;
-                    mReader.OpenProcess();
-
-                    Action isrunning = delegate ()
-                    {
-                        GameOn.Text = "游戏已运行";
-                        GameOn.ForeColor = Color.Green;
-                        TPBtn.Enabled = true;
-                        FindModulePtr();
-                        timer1.Enabled = true;
-                    };
-                    Invoke(isrunning);
+                    pModule = BitConverter.ToInt64(mReader.ReadByteArray((IntPtr)((long)mReader.process.Modules[0].BaseAddress + Actual_Base_Offset), 8u), 0);
                 }
                 else
                 {
-                    Action notrunning = delegate ()
-                    {
-                        GameOn.Text = "游戏未运行";
-                        GameOn.ForeColor = Color.Red;
-                        TPBtn.Enabled = false;
-                        GameOn.Enabled = false;
-                        timer1.Enabled = false;
-                    };
-                    Invoke(notrunning);
+                    pModule = BitConverter.ToInt64(mReader.ReadByteArray((IntPtr)((long)mReader.process.Modules[0].BaseAddress + Base_Offset), 8u), 0);
                 }
             }
-        }
+            else
+            {
+                pModule = BitConverter.ToInt64(mReader.ReadByteArray((IntPtr)((long)mReader.process.Modules[0].BaseAddress + Actual_Base_Offset), 8u), 0);
+            }
 
-        public void FindModulePtr()
-        {
-            pModule = BitConverter.ToInt64(mReader.ReadByteArray((IntPtr)((long)mReader.process.Modules[0].BaseAddress + Base_Offset), 8), 0);
+            string FlyingSig = "40534883EC20488BD9488B89********4885C9741BF605********04751233D2E8********84C0488D05";
+            long F_Offset = (long)mReader.ScanPtrBySig(FlyingSig).FirstOrDefault();
+            pFlyModule = (long)mReader.process.Modules[0].BaseAddress + F_Offset;
         }
 
         public void ReadCoord()
         {
-            byte[] buffer = mReader.ReadByteArray((IntPtr)(pModule + Offset_X), 4);
-            CurrentCoord.X = BitConverter.ToSingle(buffer, 0);
-            buffer = mReader.ReadByteArray((IntPtr)(pModule + Offset_Y), 4);
-            CurrentCoord.Y = BitConverter.ToSingle(buffer, 0);
-            buffer = mReader.ReadByteArray((IntPtr)(pModule + Offset_Z), 4);
-            CurrentCoord.Z = BitConverter.ToSingle(buffer, 0);
-            buffer = mReader.ReadByteArray((IntPtr)(pModule + Offset_RAD), 4);
-            CurrentCoord.RAD = BitConverter.ToSingle(buffer, 0);
+            byte[] value = mReader.ReadByteArray((IntPtr)(pModule + Offset_X), 4);
+            CurrentCoord.X = BitConverter.ToSingle(value, 0);
+            value = mReader.ReadByteArray((IntPtr)(pModule + Offset_Y), 4);
+            CurrentCoord.Y = BitConverter.ToSingle(value, 0);
+            value = mReader.ReadByteArray((IntPtr)(pModule + Offset_Z), 4);
+            CurrentCoord.Z = BitConverter.ToSingle(value, 0);
+            value = mReader.ReadByteArray((IntPtr)(pModule + Offset_RAD), 4);
+            CurrentCoord.RAD = BitConverter.ToSingle(value, 0);
         }
 
         public void ReadMapID()
         {
-            MapIDLabel.Text = "地图ID:" + mReader.ReadInt32((IntPtr)((long)mReader.process.Modules[0].BaseAddress + MAPID));
+            MapIDLabel.Text = "区域ID:" + mReader.ReadInt32((IntPtr)((long)mReader.process.Modules[0].BaseAddress + ZoneIDPtr));
         }
 
         public void CalcDelta()
         {
-            if (CheckCCS.Checked == true)
+            if (CCSMode.Checked == true)
             {
                 DeltaS.X = Convert.ToSingle(MultipleX.Value);
                 DeltaS.Y = Convert.ToSingle(MultipleY.Value);
@@ -162,7 +187,8 @@ namespace TowerEx_Assistant
             if (HotkeyPress)
             {
                 Teleport(CurrentCoord);
-            };
+                return;
+            }
 
             ReadCoord();
             CalcDelta();
@@ -187,13 +213,16 @@ namespace TowerEx_Assistant
             Environment.Exit(0);
         }
 
-        public void Teleport(Coordinate C)
+        public void Teleport(Coordinate coord)
         {
             byte[] buffer = new byte[12];
-            Buffer.BlockCopy(BitConverter.GetBytes(C.X), 0, buffer, 0, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(C.Z), 0, buffer, 4, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(C.Y), 0, buffer, 8, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(coord.X), 0, buffer, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(coord.Z), 0, buffer, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(coord.Y), 0, buffer, 8, 4);
             mReader.WriteByteArray((IntPtr)(pModule + Offset_X), buffer);
+            mReader.WriteByteArray((IntPtr)(pFlyModule + Fly_X), buffer);
+            //string jsonString = JsonSerializer.Serialize(coord);
+            //debugBox.AppendText(jsonString + Environment.NewLine);
         }
 
         private void TP_Click(object sender, EventArgs e)
@@ -201,24 +230,22 @@ namespace TowerEx_Assistant
             SaveRollback();
             RollBackBtn.Enabled = true;
 
-            if (CheckCCS.Checked == true || CheckPCS.Checked == true)
+            if (CCSMode.Checked || PCSMode.Checked)
             {
                 Teleport(Destination);
+                return;
             }
-            else
+            try
             {
-                Coordinate DirectTo = new Coordinate();
-                try
-                {
-                    DirectTo.X = Convert.ToSingle(DirectX.Text);
-                    DirectTo.Y = Convert.ToSingle(DirectY.Text);
-                    DirectTo.Z = Convert.ToSingle(DirectZ.Text);
-                    Teleport(DirectTo);
-                }
-                catch
-                {
-                    MessageBox.Show("请输入数字", "坐标格式错误", MessageBoxButtons.OK);
-                }
+                Coordinate c = new Coordinate();
+                c.X = Convert.ToSingle(DirectX.Text);
+                c.Y = Convert.ToSingle(DirectY.Text);
+                c.Z = Convert.ToSingle(DirectZ.Text);
+                Teleport(c);
+            }
+            catch
+            {
+                MessageBox.Show("请输入数字", "坐标格式错误", MessageBoxButtons.OK);
             }
         }
 
@@ -261,6 +288,10 @@ namespace TowerEx_Assistant
                 Teleport(HistoryRecord[HistoryRecord.Count - 1]);
                 HistoryRecord.RemoveAt(HistoryRecord.Count - 1);
             }
+            else
+            {
+                RollBackBtn.Enabled = false;
+            }
         }
 
         private void ResetBtn_Click(object sender, EventArgs e)
@@ -273,12 +304,12 @@ namespace TowerEx_Assistant
             Zvalue.Text = "0";
             MultipleP.Value = 0;
             Pvalue.Text = "0";
-            CheckCCS.Checked = true;
+            CCSMode.Checked = true;
         }
 
         private void CheckCCS_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckCCS.Checked == true)
+            if (CCSMode.Checked == true)
             {
                 MultipleX.Enabled = true;
                 MultipleY.Enabled = true;
@@ -289,7 +320,7 @@ namespace TowerEx_Assistant
 
         private void CheckPCS_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckPCS.Checked == true)
+            if (PCSMode.Checked == true)
             {
                 MultipleX.Enabled = false;
                 MultipleY.Enabled = false;
@@ -309,69 +340,150 @@ namespace TowerEx_Assistant
             }
         }
 
-        public void LoadPreset()
+        private void Loadxml()
         {
-            listBox.Items.Clear();
-            foreach (string key in preset.List.Keys)
-            {
-                listBox.Items.Add(key);
-            }
+            CoordXML = loader.Load(CoordDataPath);
+            treeView1.Nodes.Clear();
+            RecursionTreeControl(CoordXML.DocumentElement, treeView1.Nodes);
         }
 
-        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void RecursionTreeControl(XmlNode xmlNode, TreeNodeCollection treenodes)
+        {
+
+            foreach (XmlNode childNode in xmlNode.ChildNodes)
+            {
+                TreeNode treeNode = new TreeNode();
+                treeNode.Name = childNode.Name;
+                treeNode.Text = childNode.Name;
+                treenodes.Add(treeNode);
+                RecursionTreeControl(childNode, treeNode.Nodes);
+            }
+            treeView1.ExpandAll();
+        }
+
+        private void NewAreaBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                DirectX.Text = Convert.ToString(preset.List[listBox.Text].X);
-                DirectY.Text = Convert.ToString(preset.List[listBox.Text].Y);
-                DirectZ.Text = Convert.ToString(preset.List[listBox.Text].Z);
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message, "严重错误：上溢", MessageBoxButtons.OK);
-            }
-        }
+                string strText = string.Empty;
+                InputDialog.Show(out strText);
+                if (Char.IsDigit(strText, 0)) throw new Exception("开头不能是数字");
+                if (strText == "") throw new Exception("名称不能为空");
+                if (strText.StartsWith("-")) throw new Exception("非法字符");
 
-        private void SaveCoord_Click(object sender, EventArgs e)
-        {
-            string Coordname = string.Empty;
-            InputDialog.Show(out Coordname);
-            try
-            {
-                Coordinate buffer = new Coordinate();
-                buffer.X = Convert.ToSingle(DirectX.Text);
-                buffer.Y = Convert.ToSingle(DirectY.Text);
-                buffer.Z = Convert.ToSingle(DirectZ.Text);
-
-                if (preset.List.ContainsKey(Coordname))
+                foreach (XmlNode childNode in CoordXML.SelectSingleNode("Root").ChildNodes)
                 {
-                    DialogResult dr = MessageBox.Show("是否覆盖？", "坐标名称冲突", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                    if (dr == DialogResult.OK)
+                    if (childNode.Name == strText) throw new Exception("区域已存在");
+                }
+
+                XmlElement xmlElement = CoordXML.CreateElement(strText);
+                XmlAttribute xmlAttribute = CoordXML.CreateAttribute("Class");
+                xmlElement.SetAttribute("Class", "Area");
+                CoordXML.SelectSingleNode("Root").AppendChild(xmlElement);
+                treeView1.Nodes.Clear();
+                RecursionTreeControl(CoordXML.DocumentElement, treeView1.Nodes);
+                loader.OutputXML(CoordXML, CoordDataPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "严重错误：上溢", MessageBoxButtons.OK);
+            }
+        }
+
+        private void AddNewCoord_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string NewCoordName;
+                InputDialog.Show(out NewCoordName);
+                if (Char.IsDigit(NewCoordName, 0)) throw new Exception("开头不能是数字");
+                if (NewCoordName == "") throw new Exception("名称不能为空");
+                if (NewCoordName.StartsWith("-")) throw new Exception("非法字符");
+
+                string XMLPath = "Root/" + treeView1.SelectedNode.FullPath.Replace("\\", "/");
+                string TreeviewAreaPath = "";
+
+                if (CoordXML.SelectSingleNode(XMLPath).Attributes["Class"].Value == "Coord")
+                {
+                    TreeviewAreaPath = XMLPath.Replace("/" + treeView1.SelectedNode.Name, "");
+                }
+
+                if (CoordXML.SelectSingleNode(XMLPath).Attributes["Class"].Value == "Area")
+                {
+                    TreeviewAreaPath = XMLPath;
+                }
+
+                XmlElement newChild = MakeNewelement(NewCoordName);
+                foreach (XmlNode childNode in CoordXML.SelectSingleNode(TreeviewAreaPath).ChildNodes)
+                {
+                    if (childNode.Name == NewCoordName)
                     {
-                        preset.List[Coordname] = buffer;
-                        preset.Save();
+                        DialogResult dialogResult = MessageBox.Show("是否覆盖？", "坐标名称冲突", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            CoordXML.SelectSingleNode(TreeviewAreaPath).RemoveChild(CoordXML.SelectSingleNode(TreeviewAreaPath + "/" + NewCoordName));
+                            CoordXML.SelectSingleNode(TreeviewAreaPath).AppendChild(newChild);
+                            treeView1.Nodes.Clear();
+                            RecursionTreeControl(CoordXML.DocumentElement, treeView1.Nodes);
+                            loader.OutputXML(CoordXML, CoordDataPath);
+                        }
+                        return;
                     }
                 }
-                else
-                {
-                    preset.List.Add(Coordname, buffer);
-                    preset.Save();
-                }
-                LoadPreset();
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message, "严重错误：上溢", MessageBoxButtons.OK);
-            }
+                CoordXML.SelectSingleNode(TreeviewAreaPath).AppendChild(newChild);
 
+                treeView1.Nodes.Clear();
+                RecursionTreeControl(CoordXML.DocumentElement, treeView1.Nodes);
+                loader.OutputXML(CoordXML, CoordDataPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "严重错误：上溢", MessageBoxButtons.OK);
+            }
+        }
+
+        private XmlElement MakeNewelement(string name)
+        {
+            XmlElement xmlElement = CoordXML.CreateElement(name);
+            XmlAttribute xmlAttribute = CoordXML.CreateAttribute("Class");
+            Coordinate coordinate = new Coordinate();
+            coordinate.X = Convert.ToSingle(DirectX.Text);
+            coordinate.Y = Convert.ToSingle(DirectY.Text);
+            coordinate.Z = Convert.ToSingle(DirectZ.Text);
+            xmlElement.SetAttribute("Class", "Coord");
+            xmlElement.SetAttribute("X", Convert.ToString(coordinate.X));
+            xmlElement.SetAttribute("Y", Convert.ToString(coordinate.Y));
+            xmlElement.SetAttribute("Z", Convert.ToString(coordinate.Z));
+            return xmlElement;
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
-            string selected = listBox.Text;
-            preset.List.Remove(selected);
-            preset.Save();
-            LoadPreset();
+            try
+            {
+                string text = "Root/" + treeView1.SelectedNode.FullPath.Replace("\\", "/");
+                string xpath = text.Replace("/" + treeView1.SelectedNode.Name, "");
+                CoordXML.SelectSingleNode(xpath).RemoveChild(CoordXML.SelectSingleNode(text));
+                treeView1.Nodes.Clear();
+                RecursionTreeControl(CoordXML.DocumentElement, treeView1.Nodes);
+                loader.OutputXML(CoordXML, CoordDataPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "严重错误：上溢", MessageBoxButtons.OK);
+            }
+            loader.OutputXML(CoordXML, CoordDataPath);
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            string xpath = "Root/" + treeView1.SelectedNode.FullPath.Replace("\\", "/");
+            if (CoordXML.SelectSingleNode(xpath).Attributes["Class"].Value == "Coord")
+            {
+                DirectX.Text = CoordXML.SelectSingleNode(xpath).Attributes["X"].Value;
+                DirectY.Text = CoordXML.SelectSingleNode(xpath).Attributes["Y"].Value;
+                DirectZ.Text = CoordXML.SelectSingleNode(xpath).Attributes["Z"].Value;
+            }
         }
 
         private void CopyCoord_Click(object sender, EventArgs e)
@@ -404,12 +516,12 @@ namespace TowerEx_Assistant
         private void HookedKeyPress(int nCode, int wParam, KeyboardHook.HookStruct hookStruct, out bool handle)
         {
             handle = false; //预设不拦截
-            if (hookStruct.vkCode == 162 && wParam == 256) CtrlFlag = true;
-            if (hookStruct.vkCode == 162 && wParam == 257) CtrlFlag = false;
-            if (hookStruct.vkCode == 160 && wParam == 256) ShiftFlag = true;
-            if (hookStruct.vkCode == 160 && wParam == 257) ShiftFlag = false;
-            if (hookStruct.vkCode == Hotkeycode && wParam == 256) HotkeyFlag = true;
-            if (hookStruct.vkCode == Hotkeycode && wParam == 257) HotkeyFlag = false;
+            if (hookStruct.vkCode == (int)Keys.LControlKey && wParam == WM_KEYDOWN) CtrlFlag = true;
+            if (hookStruct.vkCode == (int)Keys.LControlKey && wParam == WM_KEYUP) CtrlFlag = false;
+            if (hookStruct.vkCode == (int)Keys.LShiftKey && wParam == WM_KEYDOWN) ShiftFlag = true;
+            if (hookStruct.vkCode == (int)Keys.LShiftKey && wParam == WM_KEYUP) ShiftFlag = false;
+            if (hookStruct.vkCode == Hotkeycode && wParam == WM_KEYDOWN) HotkeyFlag = true;
+            if (hookStruct.vkCode == Hotkeycode && wParam == WM_KEYUP) HotkeyFlag = false;
 
             if (checkCtrl.Checked == false && checkShift.Checked == false && HotkeyFlag)
             {
@@ -417,19 +529,19 @@ namespace TowerEx_Assistant
                 return;
             }
 
-            if (checkCtrl.Checked == true && checkShift.Checked == false && CtrlFlag && HotkeyFlag) 
+            if (checkCtrl.Checked == true && checkShift.Checked == false && CtrlFlag && HotkeyFlag)
             {
                 HotkeyPress = true;
                 return;
             }
-            
+
             if (checkCtrl.Checked == false && checkShift.Checked == true && ShiftFlag && HotkeyFlag)
             {
                 HotkeyPress = true;
                 return;
             }
 
-            if (checkCtrl.Checked == true && checkShift.Checked == true &&CtrlFlag&& ShiftFlag && HotkeyFlag)
+            if (checkCtrl.Checked == true && checkShift.Checked == true && CtrlFlag && ShiftFlag && HotkeyFlag)
             {
                 HotkeyPress = true;
                 return;
@@ -437,8 +549,6 @@ namespace TowerEx_Assistant
             HotkeyPress = false;
             return;
         }
-
-
 
         private void LoadHookHotkey()
         {
@@ -452,6 +562,26 @@ namespace TowerEx_Assistant
             Configuration.Default.ModCtrl = checkCtrl.Checked;
             Configuration.Default.ModShift = checkShift.Checked;
             Configuration.Default.ModKey = HKcombo.Text;
+        }
+
+        private async void NetworkEvent()
+        {
+
+            while (true)
+            {
+                try
+                {
+                    Coordinate coord = await server.StartListen();
+                    Action refresh = delegate ()
+                    {
+                        string jsonString = JsonSerializer.Serialize(coord);
+                        //debugBox.AppendText(jsonString + Environment.NewLine);
+                    };
+                    Invoke(refresh);
+                    Teleport(coord);
+                }
+                catch { }
+            }
         }
 
     }

@@ -72,10 +72,13 @@
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.Namebox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "InputCoordName";
-            this.Text = "输入坐标名称";
+            this.Text = "输入名称";
             this.ResumeLayout(false);
             this.PerformLayout();
 

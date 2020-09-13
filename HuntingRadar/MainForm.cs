@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MemoryApi;
+using ProcessMemoryApi;
 namespace HuntingRadar
 {
     public partial class MainForm : Form
@@ -26,7 +26,7 @@ namespace HuntingRadar
             InitializeComponent();
             Thread Find = new Thread(new ThreadStart(Find_Game));
             Find.Start();
-            ReadHuntingList();
+            //ReadHuntingList();
             
         }
 
@@ -107,5 +107,9 @@ namespace HuntingRadar
             
         }
 
+        private void CombatantListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ninja_Fantasy {
+namespace Ninja_Assistant {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
     internal sealed partial class Configuration : global::System.Configuration.ApplicationSettingsBase {
         
         private static Configuration defaultInstance = ((Configuration)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Configuration())));
@@ -73,7 +73,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton1c {
             get {
                 return ((bool)(this["Ton1c"]));
@@ -109,7 +109,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public string Ton1vK {
             get {
                 return ((string)(this["Ton1vK"]));
@@ -121,7 +121,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton2c {
             get {
                 return ((bool)(this["Ton2c"]));
@@ -157,7 +157,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public string Ton2vK {
             get {
                 return ((string)(this["Ton2vK"]));
@@ -169,7 +169,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton3c {
             get {
                 return ((bool)(this["Ton3c"]));
@@ -205,7 +205,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public string Ton3vK {
             get {
                 return ((string)(this["Ton3vK"]));
@@ -217,7 +217,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton4c {
             get {
                 return ((bool)(this["Ton4c"]));
@@ -253,7 +253,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
         public string Ton4vK {
             get {
                 return ((string)(this["Ton4vK"]));
@@ -265,7 +265,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton5c {
             get {
                 return ((bool)(this["Ton5c"]));
@@ -301,7 +301,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public string Ton5vK {
             get {
                 return ((string)(this["Ton5vK"]));
@@ -313,7 +313,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton6c {
             get {
                 return ((bool)(this["Ton6c"]));
@@ -349,7 +349,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public string Ton6vK {
             get {
                 return ((string)(this["Ton6vK"]));
@@ -361,55 +361,7 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Tparam {
-            get {
-                return ((string)(this["Tparam"]));
-            }
-            set {
-                this["Tparam"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Cparam {
-            get {
-                return ((string)(this["Cparam"]));
-            }
-            set {
-                this["Cparam"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Jparam {
-            get {
-                return ((string)(this["Jparam"]));
-            }
-            set {
-                this["Jparam"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NinjutsuParam {
-            get {
-                return ((string)(this["NinjutsuParam"]));
-            }
-            set {
-                this["NinjutsuParam"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Ton7c {
             get {
                 return ((bool)(this["Ton7c"]));
@@ -445,13 +397,109 @@ namespace Ninja_Fantasy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public string Ton7vK {
             get {
                 return ((string)(this["Ton7vK"]));
             }
             set {
                 this["Ton7vK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Ton8c {
+            get {
+                return ((bool)(this["Ton8c"]));
+            }
+            set {
+                this["Ton8c"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Ton8a {
+            get {
+                return ((bool)(this["Ton8a"]));
+            }
+            set {
+                this["Ton8a"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Ton8s {
+            get {
+                return ((bool)(this["Ton8s"]));
+            }
+            set {
+                this["Ton8s"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public string Ton8vK {
+            get {
+                return ((string)(this["Ton8vK"]));
+            }
+            set {
+                this["Ton8vK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl")]
+        public string Tparam {
+            get {
+                return ((string)(this["Tparam"]));
+            }
+            set {
+                this["Tparam"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl")]
+        public string Cparam {
+            get {
+                return ((string)(this["Cparam"]));
+            }
+            set {
+                this["Cparam"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl")]
+        public string Jparam {
+            get {
+                return ((string)(this["Jparam"]));
+            }
+            set {
+                this["Jparam"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl")]
+        public string NinjutsuParam {
+            get {
+                return ((string)(this["NinjutsuParam"]));
+            }
+            set {
+                this["NinjutsuParam"] = value;
             }
         }
     }

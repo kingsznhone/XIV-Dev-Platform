@@ -19,12 +19,12 @@ namespace BloodLetter_Fantasy
 
         SkillHotKey skillhotkey;
         IntPtr Gameptr;
-        bool Activated = false;
 
         public void Install(IntPtr Gameptr, string Param, string vK)
         {
             this.Gameptr = Gameptr;
-            skillhotkey.Param = Simulator.Transcoding(Param);
+            if (Param == "") skillhotkey.Param = 0;
+            else skillhotkey.Param = Simulator.Transcoding(Param);
             skillhotkey.vK = Simulator.Transcoding(vK);
 
         }
@@ -38,10 +38,7 @@ namespace BloodLetter_Fantasy
 
         public void Trigger()
         {
-            Activated = true;
             Simulator.Press(Gameptr, skillhotkey.Param, skillhotkey.vK, 20);
-            Thread.Sleep(30);
-            Activated = false;
         }
 
     }

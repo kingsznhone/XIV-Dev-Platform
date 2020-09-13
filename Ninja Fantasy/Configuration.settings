@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Ninja_Fantasy" GeneratedClassName="Configuration">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Ninja_Assistant" GeneratedClassName="Configuration">
   <Profiles />
   <Settings>
     <Setting Name="TvK" Type="System.String" Scope="User">
@@ -15,7 +15,7 @@
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="Ton1c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton1a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -24,10 +24,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton1vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="Ton2c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton2a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -36,10 +36,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton2vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="Ton3c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton3a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -48,10 +48,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton3vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">7</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="Ton4c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton4a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -60,10 +60,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton4vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="Ton5c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton5a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -72,10 +72,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton5vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="Ton6c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton6a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -84,26 +84,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton6vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="Tparam" Type="System.String" Scope="User">
-      <Value Profile="(Default)">
-                </Value>
-    </Setting>
-    <Setting Name="Cparam" Type="System.String" Scope="User">
-      <Value Profile="(Default)">
-                </Value>
-    </Setting>
-    <Setting Name="Jparam" Type="System.String" Scope="User">
-      <Value Profile="(Default)">
-                </Value>
-    </Setting>
-    <Setting Name="NinjutsuParam" Type="System.String" Scope="User">
-      <Value Profile="(Default)">
-                </Value>
+      <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="Ton7c" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ton7a" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -112,7 +96,31 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Ton7vK" Type="System.String" Scope="User">
-      <Value Profile="(Default)">-</Value>
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="Ton8c" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Ton8a" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Ton8s" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Ton8vK" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="Tparam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ctrl</Value>
+    </Setting>
+    <Setting Name="Cparam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ctrl</Value>
+    </Setting>
+    <Setting Name="Jparam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ctrl</Value>
+    </Setting>
+    <Setting Name="NinjutsuParam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ctrl</Value>
     </Setting>
   </Settings>
 </SettingsFile>

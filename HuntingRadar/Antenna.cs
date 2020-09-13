@@ -1,4 +1,4 @@
-﻿using MemoryApi;
+﻿using ProcessMemoryApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using HuntingRadar.Models;
 namespace HuntingRadar
 {
     class Antenna
     {
-        string sCombatantArray = "488b420848c1e8033da701000077248bc0488d0d";
+        string sCombatantArray = "48c1ea0381faa7010000****8bc2488d0d";
 
         ProcessMemoryReader mReader = new ProcessMemoryReader();
         IntPtr pStartPoint;
@@ -213,11 +213,11 @@ namespace HuntingRadar
             byte[] array2 = mReader.ReadByteArray(IntPtr.Add(CombatantPtr, offset3), 60);
             if (array2 != null && array2.Length == 60)
             {
-                combatant.CurrentHP = BitConverter.ToInt32(array2, 0);
-                combatant.MaxHP = BitConverter.ToInt32(array2, 4);
-                combatant.CurrentMP = BitConverter.ToInt32(array2, 8);
-                combatant.MaxMP = BitConverter.ToInt32(array2, 12);
-                combatant.CurrentTP = BitConverter.ToInt16(array2, 16);
+                combatant.CurrentHP = BitConverter.ToUInt32(array2, 0);
+                combatant.MaxHP = BitConverter.ToUInt32(array2, 4);
+                combatant.CurrentMP = BitConverter.ToUInt32(array2, 8);
+                combatant.MaxMP = BitConverter.ToUInt32(array2, 12);
+                combatant.CurrentTP = BitConverter.ToUInt32(array2, 16);
                 combatant.MaxTP = 1000;
                 if (combatant.CurrentTP < 0)
                 {
@@ -227,14 +227,14 @@ namespace HuntingRadar
                 {
                     combatant.CurrentTP = combatant.MaxTP;
                 }
-                combatant.CurrentGP = BitConverter.ToInt16(array2, 18);
-                combatant.MaxGP = BitConverter.ToInt16(array2, 20);
+                combatant.CurrentGP = BitConverter.ToUInt32(array2, 18);
+                combatant.MaxGP = BitConverter.ToUInt32(array2, 20);
                 if (combatant.MaxGP == 0)
                 {
                     combatant.CurrentGP = 0;
                 }
-                combatant.CurrentCP = BitConverter.ToInt16(array2, 22);
-                combatant.MaxCP = BitConverter.ToInt16(array2, 24);
+                combatant.CurrentCP = BitConverter.ToUInt32(array2, 22);
+                combatant.MaxCP = BitConverter.ToUInt32(array2, 24);
                 combatant.Job = array2[56];
                 combatant.Level = array2[58];
             }

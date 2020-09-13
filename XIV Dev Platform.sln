@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryApi", "MemoryReader\MemoryApi.csproj", "{BDF55E21-708D-447C-8760-F3FE90595DAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMemoryApi", "MemoryReader\ProcessMemoryApi.csproj", "{BDF55E21-708D-447C-8760-F3FE90595DAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloodletter Fantasy", "Bloodletter Fantasy\Bloodletter Fantasy.csproj", "{08F8D101-BF41-4967-97B6-4188DF10D84E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja Fantasy", "Ninja Fantasy\Ninja Fantasy.csproj", "{ECF73AD0-B6E3-45AA-9E61-490052ED270E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja Assistant", "Ninja Fantasy\Ninja Assistant.csproj", "{ECF73AD0-B6E3-45AA-9E61-490052ED270E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowerEx Assistant", "TowerEx Assistant\TowerEx Assistant.csproj", "{793F523B-714B-4D0C-9534-47B6EA940A96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardApi", "Keyboard\KeyboardApi.csproj", "{152B49E1-6FFA-4520-A7EA-3554E881A4D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoomHack", "ZoomHack\ZoomHack.csproj", "{70AFA88D-829A-45F4-9C96-C69C73D4591A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zoom Assistant", "ZoomHack\Zoom Assistant.csproj", "{70AFA88D-829A-45F4-9C96-C69C73D4591A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mscan", "Mscan\Mscan.csproj", "{0E9A9776-C5F3-438C-8507-60E4E06754C4}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACTHacker", "ACTHacker\ACTHacker.csproj", "{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardHook", "KeyboardHook\KeyboardHook.csproj", "{B29730D6-6571-4298-BF41-DAED42AB8B1E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSearchApi", "ScreenSearchApi\ScreenSearchApi.csproj", "{D15701CE-A799-48EE-94F4-B1FD82ED8893}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "自动进本助手", "自动进本\自动进本助手.csproj", "{DCFC4448-E6EE-4653-ADF6-613548ACEF71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +115,22 @@ Global
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|x64.ActiveCfg = Release|Any CPU
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Release|x64.Build.0 = Release|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Debug|x64.Build.0 = Debug|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Release|x64.ActiveCfg = Release|Any CPU
+		{D15701CE-A799-48EE-94F4-B1FD82ED8893}.Release|x64.Build.0 = Release|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Debug|x64.Build.0 = Debug|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|x64.ActiveCfg = Release|Any CPU
+		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ninja_Fantasy
+namespace Ninja_Assistant
 {
     static class Program
     {

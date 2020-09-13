@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HuntingRadar.Models
+{
+	public class OutgoingAbility
+	{
+		public uint TargetID
+		{
+			get;
+			set;
+		}
+
+		public uint ActorID
+		{
+			get;
+			set;
+		}
+
+		public uint SkillID
+		{
+			get;
+			set;
+		}
+
+		public uint SequenceID
+		{
+			get;
+			set;
+		}
+	}
+}

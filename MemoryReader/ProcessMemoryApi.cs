@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MemoryApi
+namespace ProcessMemoryApi
 {
     class Win32MemoryApi
     {
@@ -46,7 +46,10 @@ namespace MemoryApi
         IntPtr pBytesWritten = IntPtr.Zero;
         public Process process { get; set; }
         public IntPtr handle;
-
+        public IntPtr pBaseAddress;
+        private IntPtr pEndAddress;
+        private long ModuleSize;
+        private byte[] ModuleCopy;
         public bool FindProcess(string name)
         {
             process = Process.GetProcessesByName(name).ToList().FirstOrDefault();
@@ -61,6 +64,10 @@ namespace MemoryApi
                 Win32MemoryApi.ProcessAccessType.PROCESS_VM_WRITE |
                 Win32MemoryApi.ProcessAccessType.PROCESS_VM_OPERATION;
             handle = Win32MemoryApi.OpenProcess((uint)access, 1, (uint)process.Id);
+            pBaseAddress = process.MainModule.BaseAddress;
+            pEndAddress = IntPtr.Add(pBaseAddress, process.MainModule.ModuleMemorySize);
+            ModuleSize = (long)pEndAddress - (long)pBaseAddress;
+            ModuleCopy = new byte[ModuleSize];
         }
 
         public void CloseHandle()
@@ -147,6 +154,60 @@ namespace MemoryApi
             Win32MemoryApi.ReadProcessMemory(handle, memoryAddress, buffer, 8, out pBytesRead);
             double i = BitConverter.ToDouble(buffer, 0);
             return i;
+        }
+
+        public List<IntPtr> ScanPtrBySig(string pattern = "")
+        {
+            byte?[] array = pattern2SigArray(pattern);
+            List<IntPtr> list = new List<IntPtr>();
+            if (pattern == null || pattern.Length % 2 != 0)
+            {
+                return new List<IntPtr>();
+            }
+            ModuleCopy = ReadByteArray(pBaseAddress, (uint)ModuleSize);
+            for (int i = 0; i < ModuleCopy.Length - array.Length - 4 + 1; i++)
+            {
+                int num = 0;
+                for (int j = 0; j < array.Length; j++)
+                {
+                    if (!array[j].HasValue)
+                    {
+                        num++;
+                        continue;
+                    }
+                    if (array[j].Value != ModuleCopy[i + j])
+                    {
+                        break;
+                    }
+                    num++;
+                }
+                if (num == array.Length)
+                {
+                    IntPtr intPtr = new IntPtr(BitConverter.ToInt32(ModuleCopy, i + array.Length));
+                    long num2 = pBaseAddress.ToInt64() + i + array.Length + 4 + intPtr.ToInt64();
+                    intPtr = new IntPtr(num2 - (long)process.MainModule.BaseAddress);
+                    list.Add(intPtr);
+                }
+            }
+            return list;
+        }
+
+        private byte?[] pattern2SigArray(string pattern)
+        {
+            byte?[] array = new byte?[pattern.Length / 2];
+            for (int i = 0; i < pattern.Length / 2; i++)
+            {
+                string text = pattern.Substring(i * 2, 2);
+                if (text == "**")
+                {
+                    array[i] = null;
+                }
+                else
+                {
+                    array[i] = Convert.ToByte(text, 16);
+                }
+            }
+            return array;
         }
 
         public void WriteToPtr_x64(long[] PointerChain,byte[] Data)

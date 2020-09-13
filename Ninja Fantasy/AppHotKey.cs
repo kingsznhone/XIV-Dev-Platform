@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ninja_Fantasy
+namespace Ninja_Assistant
 {
     public static  class AppHotKey
     {

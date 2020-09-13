@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Diagnostics;
-using MemoryApi;
 using KeyboardApi;
+using ProcessMemoryApi;
+using BloodLetter_Fantasy.Properties;
 
 namespace BloodLetter_Fantasy
 {
@@ -22,13 +23,13 @@ namespace BloodLetter_Fantasy
 
         public IntPtr Gameptr;
 
+        Bitmap BlackOutBL; 
         SpeechSynthesizer Speaker = new SpeechSynthesizer();
-        private bool MasterSwitch = false;
         private bool APEngage = false;
-        long[] ModulePointers = new long[] { 0x1AABDE0, 0x38, 0x18, 0x30, 0x20 };
+        long[] ModulePointers = new long[] { 0x1C626F0, 0x38, 0x18, 0x30, 0x20 };
 
         long pModuleHotbar;
-        long BLptr = 0;
+        long CDptr = 0;
 
         int CD;
 
@@ -38,22 +39,42 @@ namespace BloodLetter_Fantasy
         private const int HKID = 0x3721;
 
         const int BLID = 0x6E;
-        const int MEID = 0x67;
-        const int SSID = 0x19;
 
         ProcessMemoryReader mReader = new ProcessMemoryReader();
 
         Autopilot BLAP = new Autopilot();
 
+        HotbarCollection hotbar;
         public Main()
         {
+            if (!mReader.FindProcess("ffxiv_dx11"))
+            {
+                MessageBox.Show("游戏未运行", "严重错误：上溢", MessageBoxButtons.OK);
+                Environment.Exit(0);
+            }
+
             InitializeComponent();
-            Thread F = new Thread(new ThreadStart(Find_Game));
-            F.Start();
             LoadCFG();
+
+            Process p = Process.GetProcessesByName("ffxiv_dx11").ToList().FirstOrDefault();
+            mReader.process = p;
+            mReader.OpenProcess();
+
+            Thread F = new Thread(new ThreadStart(FindPtr));
+            F.Start();
+
+            hotbar = new HotbarCollection();
             InitTTS();
+            BlackOutBL = LoadBlackOut();
+
+            BLAP.Uninstall();
             AppHotKey.UnRegKey(Handle, HKID);
-            LoadBlackOut();
+
+            uint Modifier = AppHotKey.ModifyKey(Settings.Default.AutoC, Settings.Default.AutoA, Settings.Default.AutoS);
+            uint vK = Simulator.Transcoding(Settings.Default.AutovK);
+            AppHotKey.RegKey(Handle, HKID, Modifier, vK);
+            IntPtr gameptr = FindWindow(null, "最终幻想XIV");
+            BLAP.Install(gameptr, BLParam.Text, BLvK.Text);
         }
 
         public void InitTTS()
@@ -64,95 +85,52 @@ namespace BloodLetter_Fantasy
             Speaker.SpeakAsync("Initialized");
         }
 
-        public void Find_Game()
+        public void FindPtr()
         {
             while (true)
             {
-                Thread.Sleep(3000);
-                if (mReader.FindProcess("ffxiv_dx11"))
-                {
-                    Action isrunning = delegate ()
-                    {
-                        GameStatusLB.Text = "Game Is Running";
-                        GameStatusLB.ForeColor = Color.Green;
-                        StartBtn.Enabled = true;
-
-                        Process p = Process.GetProcessesByName("ffxiv_dx11").ToList().FirstOrDefault();
-                        mReader.process = p;
-                        mReader.OpenProcess();
-                        FindPtr();
-
-                        timer1.Enabled = true;
-                    };
-                    Invoke(isrunning);
-                }
-                else
-                {
-                    Action notrunning = delegate ()
-                    {
-                        GameStatusLB.Text = "Game Is Not Running";
-                        GameStatusLB.ForeColor = Color.Red;
-                        StartBtn.Enabled = false;
-                        GameStatusLB.Enabled = false;
-                        timer1.Enabled = false;
-                    };
-                    Invoke(notrunning);
-                }
+                Thread.Sleep(1000);
+                pModuleHotbar = mReader.ReadPtr_x64(ModulePointers);
+                CDptr = ScanHotbar();
             }
+            
         }
 
-        public void FindPtr()
+        public long ScanHotbar()
         {
-
-            pModuleHotbar = mReader.ReadPtr_x64(ModulePointers);
-            BLptr = ScanSkill(BLID);
-        }
-
-
-
-        public long ScanSkill(long ID)
-        {
-            int HotbarID;
-            long IDPtr = pModuleHotbar + 0x3C;
-            for (int j = 1; j <= 10; j++)
+            int skillID;
+            long cdptr = 0;
+            long unitPtr = pModuleHotbar + 0x3C;
+            //byte[] buffer;
+            for (int row = 0; row < 10; row++)
             {
-                for (int i = 1; i <= 12; i++)
+                for (int unit = 0; unit < 12; unit++)
                 {
-                    if (mReader.ReadInt32((IntPtr)(IDPtr)) == 42)
-                    {
-                        HotbarID = mReader.ReadInt32((IntPtr)(IDPtr + 0xC));
+                    //buffer = mReader.ReadByteArray((IntPtr)(unitPtr), 0x40);
+                    //hotbar.AddUnit(buffer, row, unit);
 
-                        if (HotbarID == ID)
-                        {
-                            this.pictureBox1.Image = Properties.Resources.BloodLetter;
-                            return IDPtr + 0x1C;
-                        }
-                        else
-                        {
-                            IDPtr += 0x2C;
-                        }
-                    }
-                    else
+                    if (mReader.ReadInt32((IntPtr)(unitPtr)) == 0x2c)
                     {
-                        IDPtr += 0x2C;
+                        skillID = mReader.ReadInt32((IntPtr)(unitPtr + 0xC));
+                        if (skillID == BLID) cdptr = unitPtr + 0x28;
                     }
+                    unitPtr += 0x40;
                 }
-                IDPtr += 0x108;
+                unitPtr += 0x100;
             }
-            LoadBlackOut();
-            return 0;
+            return cdptr;
         }
 
-        public int ScanCoolDown(long Skillptr)
+        public int ScanCoolDown(long CDptr)
         {
             int CD;
             bool Availability;
-            if (Skillptr != 0)
+            if (CDptr != 0)
             {
-                Availability = BitConverter.ToBoolean(mReader.ReadByteArray((IntPtr)(Skillptr - 0x4), 4), 0);
+                Availability = BitConverter.ToBoolean(mReader.ReadByteArray((IntPtr)(CDptr - 0x14), 4), 0);
                 if (Availability)
                 {
-                    CD = mReader.ReadInt32((IntPtr)(Skillptr));
+                    CD = mReader.ReadInt32((IntPtr)(CDptr));
                     return CD == -1 ? 0 : CD;
                 }
                 else return -1;
@@ -160,26 +138,25 @@ namespace BloodLetter_Fantasy
             else return -2;
         }
 
-
         public void LoadCFG()
         {
-            BLParam.Text = Configuration.Default.BLParam;
-            BLvK.Text = Configuration.Default.BLvK;
-            AutoC.Checked = Configuration.Default.AutoC;
-            AutoA.Checked = Configuration.Default.AutoA;
-            AutoS.Checked = Configuration.Default.AutoS;
-            AutovK.Text = Configuration.Default.AutovK;
+            BLParam.Text =Settings.Default.BLParam;
+            BLvK.Text = Settings.Default.BLvK;
+            AutoC.Checked = Settings.Default.AutoC;
+            AutoA.Checked = Settings.Default.AutoA;
+            AutoS.Checked = Settings.Default.AutoS;
+            AutovK.Text = Settings.Default.AutovK;
         }
 
         public void SaveCFG()
         {
-            Configuration.Default.BLParam = BLParam.Text;
-            Configuration.Default.BLvK = BLvK.Text;
-            Configuration.Default.AutoC = AutoC.Checked;
-            Configuration.Default.AutoA = AutoA.Checked;
-            Configuration.Default.AutoS = AutoS.Checked;
-            Configuration.Default.AutovK = AutovK.Text;
-            Configuration.Default.Save();
+            Settings.Default.BLParam = BLParam.Text;
+            Settings.Default.BLvK = BLvK.Text;
+            Settings.Default.AutoC = AutoC.Checked;
+            Settings.Default.AutoA = AutoA.Checked;
+            Settings.Default.AutoS = AutoS.Checked;
+            Settings.Default.AutovK = AutovK.Text;
+            Settings.Default.Save();
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
@@ -191,32 +168,16 @@ namespace BloodLetter_Fantasy
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-
-
             switch (m.Msg)
             {
-
                 case WM_HOTKEY:
-                    if (MasterSwitch)
+                    switch (m.WParam.ToInt32())
                     {
-                        switch (m.WParam.ToInt32())
-                        {
-
-                            case HKID:
-                                if (APEngage)
-                                {
-                                    APEngage = false;
-                                    Speaker.SpeakAsync("Deactivated");
-                                }
-                                else
-                                {
-                                    APEngage = true;
-                                    Speaker.SpeakAsync("Activated");
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                        case HKID:
+                            APEngage = !APEngage;
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 case WM_DESTROY:
@@ -229,17 +190,21 @@ namespace BloodLetter_Fantasy
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            CD = ScanCoolDown(BLptr);
+            CD = ScanCoolDown(CDptr);
             switch (CD)
             {
                 case -1:
-                    //Cooling
+                    //Unable
+                    this.pictureBox1.Image = BlackOutBL;
                     break;
                 case -2:
+                    this.pictureBox1.Image = BlackOutBL;
+
                     //Undetected
                     break;
                 case 0:
                     //CD = 0
+                    this.pictureBox1.Image = Properties.Resources.BloodLetter;
                     if (APEngage) BLAP.Trigger();
                     break;
                 default:
@@ -249,44 +214,24 @@ namespace BloodLetter_Fantasy
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
-            if (MasterSwitch)
-            {
-                APEngage = false;
+            SaveCFG();
+            AppHotKey.UnRegKey(Handle, HKID);
+            BLAP.Uninstall();
 
-                AppHotKey.UnRegKey(Handle, HKID);
-                MasterSwitch = false;
-                StartBtn.Text = "Arm";
-                StartBtn.ForeColor = Color.Green;
-                Speaker.SpeakAsync("Hotkey Unregistered");
-                BLAP.Uninstall();
-            }
-            else
-            {
-                SaveCFG();
-                uint Modifier = AppHotKey.ModifyKey(Configuration.Default.AutoC, Configuration.Default.AutoA, Configuration.Default.AutoS);
-                uint vK = Simulator.Transcoding(Configuration.Default.AutovK);
-                AppHotKey.RegKey(Handle, HKID, Modifier, vK);
-
-                //CN Window
-                IntPtr gameptr = FindWindow(null, "最终幻想XIV");
-                
-                BLAP.Install(gameptr, BLParam.Text, BLvK.Text);
-                MasterSwitch = true;
-
-                StartBtn.Text = "Disarm";
-                StartBtn.ForeColor = Color.Red;
-                Speaker.SpeakAsync("Hotkey Registered");
-            }
-
+            uint Modifier = AppHotKey.ModifyKey(Settings.Default.AutoC, Settings.Default.AutoA, Settings.Default.AutoS);
+            uint vK = Simulator.Transcoding(Settings.Default.AutovK);
+            AppHotKey.RegKey(Handle, HKID, Modifier, vK);
+            IntPtr gameptr = FindWindow(null, "最终幻想XIV");
+            BLAP.Install(gameptr, BLParam.Text, BLvK.Text);
         }
 
-        private void LoadBlackOut()
+        private Bitmap LoadBlackOut()
         {
             int Height = Properties.Resources.BloodLetter.Height;
             int Width = Properties.Resources.BloodLetter.Width;
             Bitmap OriginBMP = (Bitmap)Properties.Resources.BloodLetter;
             Bitmap BlackOutBMP = new Bitmap(Width, Height);
-            
+
             Color pixel;
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
@@ -302,7 +247,18 @@ namespace BloodLetter_Fantasy
 
                     BlackOutBMP.SetPixel(x, y, Color.FromArgb(Result, Result, Result));
                 }
-            this.pictureBox1.Image = BlackOutBMP;
+            return BlackOutBMP;
+        }
+
+        private void Modifier_CheckedChanged(object sender, EventArgs e)
+        {
+            //AppHotKey.UnRegKey(Handle, HKID);
+            //BLAP.Uninstall();
+            //uint Modifier = AppHotKey.ModifyKey(Settings.Default.AutoC, Settings.Default.AutoA, Settings.Default.AutoS);
+            //uint vK = Simulator.Transcoding(Settings.Default.AutovK);
+            //AppHotKey.RegKey(Handle, HKID, Modifier, vK);
+            //IntPtr gameptr = FindWindow(null, "最终幻想XIV");
+            //BLAP.Install(gameptr, BLParam.Text, BLvK.Text);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using KeyboardApi;
-namespace Ninja_Fantasy
+namespace Ninja_Assistant
 {
     public partial class MainForm : Form
     {
@@ -22,14 +22,14 @@ namespace Ninja_Fantasy
         private const int WM_CREATE = 0x1;
         private const int WM_DESTROY = 0x2;
 
-        private const int Dun1ID = 0x3572;
-        private const int Dun2ID = 0x3573;
-        private const int Dun3ID = 0x3574;
-        private const int Dun4ID = 0x3575;
-        private const int Dun5ID = 0x3576;
-        private const int Dun6ID = 0x3577;
-        private const int Dun7ID = 0x3578;
-
+        private const int Dun1ID = 0x13571;
+        private const int Dun2ID = 0x13572;
+        private const int Dun3ID = 0x13573;
+        private const int Dun4ID = 0x13574;
+        private const int Dun5ID = 0x13575;
+        private const int Dun6ID = 0x13576;
+        private const int Dun7ID = 0x13577;
+        private const int Dun8ID = 0x13578;
         Mudra M = new Mudra();
 
         public MainForm()
@@ -152,13 +152,18 @@ namespace Ninja_Fantasy
                                 Suiton.Start();
                                 break;
                             case Dun6ID:
+                                Thread Hyoton = new Thread(new ThreadStart(M.Hyoton));
+                                Hyoton.Start();
+                                break;
+                            case Dun7ID:
                                 Thread Shuriken = new Thread(new ThreadStart(M.Shuriken));
                                 Shuriken.Start();
                                 break;
-                            case Dun7ID:
+                            case Dun8ID:
                                 Thread TCJ = new Thread(new ThreadStart(M.TCJ));
                                 TCJ.Start();
                                 break;
+
                             default:
                                 break;
                         }
@@ -308,7 +313,7 @@ namespace Ninja_Fantasy
                 Ton6a.Enabled = false;
                 Ton6s.Enabled = false;
                 Ton6vK.Enabled = false;
-                debugbox.AppendText("手里剑已注册。" + Environment.NewLine);
+                debugbox.AppendText("冰遁已注册。" + Environment.NewLine);
             }
             else
             {
@@ -317,7 +322,7 @@ namespace Ninja_Fantasy
                 Ton6a.Enabled = true;
                 Ton6s.Enabled = true;
                 Ton6vK.Enabled = true;
-                debugbox.AppendText("手里剑已卸载。" + Environment.NewLine);
+                debugbox.AppendText("冰遁已卸载。" + Environment.NewLine);
             }
         }
 
@@ -333,7 +338,7 @@ namespace Ninja_Fantasy
                 Ton7a.Enabled = false;
                 Ton7s.Enabled = false;
                 Ton7vK.Enabled = false;
-                debugbox.AppendText("天地人已注册。" + Environment.NewLine);
+                debugbox.AppendText("手里剑已注册。" + Environment.NewLine);
             }
             else
             {
@@ -342,6 +347,31 @@ namespace Ninja_Fantasy
                 Ton7a.Enabled = true;
                 Ton7s.Enabled = true;
                 Ton7vK.Enabled = true;
+                debugbox.AppendText("手里剑已卸载。" + Environment.NewLine);
+            }
+        }
+
+        private void RegDun8(object sender, EventArgs e)
+        {
+            LoadCFG();
+            uint Modifier = AppHotKey.ModifyKey(Configuration.Default.Ton8c, Configuration.Default.Ton8a, Configuration.Default.Ton8s);
+            uint vK = Simulator.Transcoding(Configuration.Default.Ton8vK);
+            if (chkActivate8.Checked == true)
+            {
+                AppHotKey.RegKey(Handle, Dun8ID, Modifier, vK);
+                Ton8c.Enabled = false;
+                Ton8a.Enabled = false;
+                Ton8s.Enabled = false;
+                Ton8vK.Enabled = false;
+                debugbox.AppendText("天地人已注册。" + Environment.NewLine);
+            }
+            else
+            {
+                AppHotKey.UnRegKey(Handle, Dun8ID);
+                Ton8c.Enabled = true;
+                Ton8a.Enabled = true;
+                Ton8s.Enabled = true;
+                Ton8vK.Enabled = true;
                 debugbox.AppendText("天地人已卸载。" + Environment.NewLine);
             }
         }
@@ -384,6 +414,9 @@ namespace Ninja_Fantasy
             Ton7c.Checked = Configuration.Default.Ton7c;
             Ton7a.Checked = Configuration.Default.Ton7a;
             Ton7s.Checked = Configuration.Default.Ton7s;
+            Ton8c.Checked = Configuration.Default.Ton8c;
+            Ton8a.Checked = Configuration.Default.Ton8a;
+            Ton8s.Checked = Configuration.Default.Ton8s;
 
             Ton1vK.Text = Configuration.Default.Ton1vK;
             Ton2vK.Text = Configuration.Default.Ton2vK;
@@ -392,7 +425,7 @@ namespace Ninja_Fantasy
             Ton5vK.Text = Configuration.Default.Ton5vK;
             Ton6vK.Text = Configuration.Default.Ton6vK;
             Ton7vK.Text = Configuration.Default.Ton7vK;
-
+            Ton8vK.Text = Configuration.Default.Ton8vK;
         }
 
         private void SaveCFG()
@@ -427,6 +460,9 @@ namespace Ninja_Fantasy
             Configuration.Default.Ton7c = Ton7c.Checked;
             Configuration.Default.Ton7a = Ton7a.Checked;
             Configuration.Default.Ton7s = Ton7s.Checked;
+            Configuration.Default.Ton8c = Ton8c.Checked;
+            Configuration.Default.Ton8a = Ton8a.Checked;
+            Configuration.Default.Ton8s = Ton8s.Checked;
 
             Configuration.Default.Ton1vK = Ton1vK.Text;
             Configuration.Default.Ton2vK = Ton2vK.Text;
@@ -435,6 +471,7 @@ namespace Ninja_Fantasy
             Configuration.Default.Ton5vK = Ton5vK.Text;
             Configuration.Default.Ton6vK = Ton6vK.Text;
             Configuration.Default.Ton7vK = Ton7vK.Text;
+            Configuration.Default.Ton8vK = Ton8vK.Text;
 
             Configuration.Default.Save();
         }

@@ -59,6 +59,7 @@
             this.CombatantListBox.Name = "CombatantListBox";
             this.CombatantListBox.Size = new System.Drawing.Size(205, 544);
             this.CombatantListBox.TabIndex = 2;
+            this.CombatantListBox.SelectedIndexChanged += new System.EventHandler(this.CombatantListBox_SelectedIndexChanged);
             // 
             // MainForm
             // 

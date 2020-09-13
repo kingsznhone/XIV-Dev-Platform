@@ -30,10 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TowerExMain));
-            this.GameOn = new System.Windows.Forms.Label();
             this.TPBtn = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
             this.XLabel = new System.Windows.Forms.Label();
             this.YLabel = new System.Windows.Forms.Label();
             this.ZLabel = new System.Windows.Forms.Label();
@@ -52,8 +50,8 @@
             this.Zvalue = new System.Windows.Forms.Label();
             this.ModeSelect = new System.Windows.Forms.GroupBox();
             this.CheckACS = new System.Windows.Forms.RadioButton();
-            this.CheckPCS = new System.Windows.Forms.RadioButton();
-            this.CheckCCS = new System.Windows.Forms.RadioButton();
+            this.PCSMode = new System.Windows.Forms.RadioButton();
+            this.CCSMode = new System.Windows.Forms.RadioButton();
             this.MultipleP = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.Pvalue = new System.Windows.Forms.Label();
@@ -70,9 +68,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.listBox = new System.Windows.Forms.ListBox();
-            this.SaveCoordBtn = new System.Windows.Forms.Button();
-            this.DeleteBtn = new System.Windows.Forms.Button();
             this.CopyCoord = new System.Windows.Forms.Button();
             this.MapIDLabel = new System.Windows.Forms.Label();
             this.CoordLock = new System.Windows.Forms.CheckBox();
@@ -81,6 +76,11 @@
             this.HKcombo = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.DeleteBtn = new System.Windows.Forms.Button();
+            this.NewAreaBtn = new System.Windows.Forms.Button();
+            this.AddCoordBtn = new System.Windows.Forms.Button();
+            this.NetworkStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleZ)).BeginInit();
@@ -89,23 +89,9 @@
             this.InputCoord.SuspendLayout();
             this.SuspendLayout();
             // 
-            // GameOn
-            // 
-            this.GameOn.AutoSize = true;
-            this.GameOn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.GameOn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.GameOn.ForeColor = System.Drawing.Color.Red;
-            this.GameOn.Location = new System.Drawing.Point(924, 45);
-            this.GameOn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.GameOn.Name = "GameOn";
-            this.GameOn.Size = new System.Drawing.Size(114, 29);
-            this.GameOn.TabIndex = 0;
-            this.GameOn.Text = "游戏未运行";
-            // 
             // TPBtn
             // 
             this.TPBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.TPBtn.Enabled = false;
             this.TPBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.TPBtn.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TPBtn.Location = new System.Drawing.Point(958, 687);
@@ -118,16 +104,8 @@
             // 
             // timer1
             // 
+            this.timer1.Interval = 50;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(772, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 27);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "By:ZNH";
             // 
             // XLabel
             // 
@@ -283,8 +261,8 @@
             // ModeSelect
             // 
             this.ModeSelect.Controls.Add(this.CheckACS);
-            this.ModeSelect.Controls.Add(this.CheckPCS);
-            this.ModeSelect.Controls.Add(this.CheckCCS);
+            this.ModeSelect.Controls.Add(this.PCSMode);
+            this.ModeSelect.Controls.Add(this.CCSMode);
             this.ModeSelect.Location = new System.Drawing.Point(366, 12);
             this.ModeSelect.Name = "ModeSelect";
             this.ModeSelect.Size = new System.Drawing.Size(368, 70);
@@ -303,29 +281,29 @@
             this.CheckACS.UseVisualStyleBackColor = true;
             this.CheckACS.CheckedChanged += new System.EventHandler(this.CheckACS_CheckedChanged);
             // 
-            // CheckPCS
+            // PCSMode
             // 
-            this.CheckPCS.AutoSize = true;
-            this.CheckPCS.Location = new System.Drawing.Point(146, 33);
-            this.CheckPCS.Name = "CheckPCS";
-            this.CheckPCS.Size = new System.Drawing.Size(93, 31);
-            this.CheckPCS.TabIndex = 1;
-            this.CheckPCS.Text = "极坐标";
-            this.CheckPCS.UseVisualStyleBackColor = true;
-            this.CheckPCS.CheckedChanged += new System.EventHandler(this.CheckPCS_CheckedChanged);
+            this.PCSMode.AutoSize = true;
+            this.PCSMode.Location = new System.Drawing.Point(146, 33);
+            this.PCSMode.Name = "PCSMode";
+            this.PCSMode.Size = new System.Drawing.Size(93, 31);
+            this.PCSMode.TabIndex = 1;
+            this.PCSMode.Text = "极坐标";
+            this.PCSMode.UseVisualStyleBackColor = true;
+            this.PCSMode.CheckedChanged += new System.EventHandler(this.CheckPCS_CheckedChanged);
             // 
-            // CheckCCS
+            // CCSMode
             // 
-            this.CheckCCS.AutoSize = true;
-            this.CheckCCS.Checked = true;
-            this.CheckCCS.Location = new System.Drawing.Point(27, 33);
-            this.CheckCCS.Name = "CheckCCS";
-            this.CheckCCS.Size = new System.Drawing.Size(113, 31);
-            this.CheckCCS.TabIndex = 0;
-            this.CheckCCS.TabStop = true;
-            this.CheckCCS.Text = "直角坐标";
-            this.CheckCCS.UseVisualStyleBackColor = true;
-            this.CheckCCS.CheckedChanged += new System.EventHandler(this.CheckCCS_CheckedChanged);
+            this.CCSMode.AutoSize = true;
+            this.CCSMode.Checked = true;
+            this.CCSMode.Location = new System.Drawing.Point(27, 33);
+            this.CCSMode.Name = "CCSMode";
+            this.CCSMode.Size = new System.Drawing.Size(113, 31);
+            this.CCSMode.TabIndex = 0;
+            this.CCSMode.TabStop = true;
+            this.CCSMode.Text = "直角坐标";
+            this.CCSMode.UseVisualStyleBackColor = true;
+            this.CCSMode.CheckedChanged += new System.EventHandler(this.CheckCCS_CheckedChanged);
             // 
             // MultipleP
             // 
@@ -491,43 +469,12 @@
             this.label6.TabIndex = 17;
             this.label6.Text = "X";
             // 
-            // listBox
-            // 
-            this.listBox.Enabled = false;
-            this.listBox.FormattingEnabled = true;
-            this.listBox.ItemHeight = 27;
-            this.listBox.Location = new System.Drawing.Point(12, 185);
-            this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(312, 490);
-            this.listBox.TabIndex = 18;
-            this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
-            // 
-            // SaveCoordBtn
-            // 
-            this.SaveCoordBtn.Location = new System.Drawing.Point(224, 682);
-            this.SaveCoordBtn.Name = "SaveCoordBtn";
-            this.SaveCoordBtn.Size = new System.Drawing.Size(100, 35);
-            this.SaveCoordBtn.TabIndex = 19;
-            this.SaveCoordBtn.Text = "保存";
-            this.SaveCoordBtn.UseVisualStyleBackColor = true;
-            this.SaveCoordBtn.Click += new System.EventHandler(this.SaveCoord_Click);
-            // 
-            // DeleteBtn
-            // 
-            this.DeleteBtn.Location = new System.Drawing.Point(12, 682);
-            this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(100, 35);
-            this.DeleteBtn.TabIndex = 19;
-            this.DeleteBtn.Text = "删除";
-            this.DeleteBtn.UseVisualStyleBackColor = true;
-            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
-            // 
             // CopyCoord
             // 
             this.CopyCoord.BackColor = System.Drawing.SystemColors.Control;
             this.CopyCoord.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.CopyCoord.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CopyCoord.Location = new System.Drawing.Point(733, 245);
+            this.CopyCoord.Location = new System.Drawing.Point(757, 245);
             this.CopyCoord.Name = "CopyCoord";
             this.CopyCoord.Size = new System.Drawing.Size(150, 35);
             this.CopyCoord.TabIndex = 1;
@@ -655,11 +602,67 @@
             this.label10.TabIndex = 26;
             this.label10.Text = "+";
             // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(12, 257);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(312, 460);
+            this.treeView1.TabIndex = 27;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            // 
+            // DeleteBtn
+            // 
+            this.DeleteBtn.Location = new System.Drawing.Point(12, 201);
+            this.DeleteBtn.Name = "DeleteBtn";
+            this.DeleteBtn.Size = new System.Drawing.Size(100, 34);
+            this.DeleteBtn.TabIndex = 28;
+            this.DeleteBtn.Text = "删除";
+            this.DeleteBtn.UseVisualStyleBackColor = true;
+            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
+            // 
+            // NewAreaBtn
+            // 
+            this.NewAreaBtn.Location = new System.Drawing.Point(118, 201);
+            this.NewAreaBtn.Name = "NewAreaBtn";
+            this.NewAreaBtn.Size = new System.Drawing.Size(100, 34);
+            this.NewAreaBtn.TabIndex = 28;
+            this.NewAreaBtn.Text = "新区域";
+            this.NewAreaBtn.UseVisualStyleBackColor = true;
+            this.NewAreaBtn.Click += new System.EventHandler(this.NewAreaBtn_Click);
+            // 
+            // AddCoordBtn
+            // 
+            this.AddCoordBtn.Location = new System.Drawing.Point(224, 201);
+            this.AddCoordBtn.Name = "AddCoordBtn";
+            this.AddCoordBtn.Size = new System.Drawing.Size(100, 34);
+            this.AddCoordBtn.TabIndex = 28;
+            this.AddCoordBtn.Text = "新坐标";
+            this.AddCoordBtn.UseVisualStyleBackColor = true;
+            this.AddCoordBtn.Click += new System.EventHandler(this.AddNewCoord_Click);
+            // 
+            // NetworkStatus
+            // 
+            this.NetworkStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.NetworkStatus.BackColor = System.Drawing.Color.White;
+            this.NetworkStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.NetworkStatus.Location = new System.Drawing.Point(757, 12);
+            this.NetworkStatus.Name = "NetworkStatus";
+            this.NetworkStatus.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.NetworkStatus.Size = new System.Drawing.Size(313, 34);
+            this.NetworkStatus.TabIndex = 30;
+            this.NetworkStatus.Text = "未监听";
+            this.NetworkStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // TowerExMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1070, 734);
+            this.ClientSize = new System.Drawing.Size(1082, 739);
+            this.Controls.Add(this.NetworkStatus);
+            this.Controls.Add(this.AddCoordBtn);
+            this.Controls.Add(this.NewAreaBtn);
+            this.Controls.Add(this.DeleteBtn);
+            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.HKcombo);
@@ -667,9 +670,6 @@
             this.Controls.Add(this.checkCtrl);
             this.Controls.Add(this.CoordLock);
             this.Controls.Add(this.MapIDLabel);
-            this.Controls.Add(this.DeleteBtn);
-            this.Controls.Add(this.SaveCoordBtn);
-            this.Controls.Add(this.listBox);
             this.Controls.Add(this.InputCoord);
             this.Controls.Add(this.MaxDistAlert);
             this.Controls.Add(this.ModeSelect);
@@ -695,17 +695,17 @@
             this.Controls.Add(this.DeltaX);
             this.Controls.Add(this.YLabel);
             this.Controls.Add(this.XLabel);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.ResetBtn);
             this.Controls.Add(this.RollBackBtn);
             this.Controls.Add(this.CopyCoord);
             this.Controls.Add(this.TPBtn);
-            this.Controls.Add(this.GameOn);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MaximizeBox = false;
             this.Name = "TowerExMain";
-            this.Text = "一键极楼神 v5.0.1";
+            this.Text = "一键极楼神 v5.2.2【ZNH Industry™】";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.MultipleX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleY)).EndInit();
@@ -721,11 +721,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label GameOn;
         private System.Windows.Forms.Button TPBtn;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label XLabel;
         private System.Windows.Forms.Label YLabel;
         private System.Windows.Forms.Label ZLabel;
@@ -743,8 +740,8 @@
         private System.Windows.Forms.Label Yvalue;
         private System.Windows.Forms.Label Zvalue;
         private System.Windows.Forms.GroupBox ModeSelect;
-        private System.Windows.Forms.RadioButton CheckPCS;
-        private System.Windows.Forms.RadioButton CheckCCS;
+        private System.Windows.Forms.RadioButton PCSMode;
+        private System.Windows.Forms.RadioButton CCSMode;
         private System.Windows.Forms.TrackBar MultipleP;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label Pvalue;
@@ -762,9 +759,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ListBox listBox;
-        private System.Windows.Forms.Button SaveCoordBtn;
-        private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Button CopyCoord;
         private System.Windows.Forms.Label MapIDLabel;
         private System.Windows.Forms.CheckBox CoordLock;
@@ -773,6 +767,11 @@
         private System.Windows.Forms.ComboBox HKcombo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Button DeleteBtn;
+        private System.Windows.Forms.Button NewAreaBtn;
+        private System.Windows.Forms.Button AddCoordBtn;
+        private System.Windows.Forms.Label NetworkStatus;
     }
 }
 

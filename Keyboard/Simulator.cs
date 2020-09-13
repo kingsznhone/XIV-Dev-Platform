@@ -1,61 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace KeyboardApi
 {
-    public static class Simulator
-    {
-        [DllImport("user32.dll")] private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-        [DllImport("user32.dll")] private static extern int SendMessage(IntPtr hWnd, uint Msg, uint wParam, uint lParam);
+	public static class Simulator
+	{
+		private const int SW_SHOWNORMAL = 1;
 
+		private const int SW_RESTORE = 9;
 
-        private const int SW_SHOWNORMAL = 1;
-        private const int SW_RESTORE = 9;
-        private const int SW_SHOWNOACTIVATE = 4;
+		private const int SW_SHOWNOACTIVATE = 4;
 
-        private const int WM_KEYDOWN = 0X100;
-        private const int WM_KEYUP = 0X101;
-        private const int WM_CHAR = 0X102;
-        private const int WM_SYSCHAR = 0X106;
-        private const int WM_SYSKEYUP = 0X105;
-        private const int WM_SYSKEYDOWN = 0X104;
+		private const int WM_KEYDOWN = 256;
 
+		private const int WM_KEYUP = 257;
 
-        public static void Press(IntPtr GamePtr, uint Param, uint Key, int duration)
-        {
-            if (Param != 0)
-            {
-                SendMessage(GamePtr, WM_SYSKEYDOWN, Param, 0);
-                SendMessage(GamePtr, WM_SYSKEYDOWN, Key, 0);
-                System.Threading.Thread.Sleep(duration);
-                SendMessage(GamePtr, WM_SYSKEYUP, Param, 0);
-                SendMessage(GamePtr, WM_SYSKEYUP, Key, 0);
-            }
-            else
-            {
-                SendMessage(GamePtr, WM_KEYDOWN, Key, 0);
-                System.Threading.Thread.Sleep(duration);
-                SendMessage(GamePtr, WM_KEYUP, Key, 0);
-            }
-        }
+		private const int WM_CHAR = 258;
 
-        public static uint Transcoding(string keyname)
-        {
-            try
-            {
-                VK KeyList = new VK();
-                uint code = 0;
-                code = Convert.ToUInt32(KeyList.GetType().GetField("VK_" + keyname).GetValue(KeyList));
-                return code;
-            }
-            catch (NullReferenceException e)
-            {
-                return 0;
-            }
-        }
-    }
+		private const int WM_SYSCHAR = 262;
+
+		private const int WM_SYSKEYUP = 261;
+
+		private const int WM_SYSKEYDOWN = 260;
+
+		private static bool busy = false;
+
+		[DllImport("user32.dll")]
+		private static extern int SendMessage(IntPtr hWnd, uint Msg, uint wParam, uint lParam);
+
+		public static int Press(IntPtr GamePtr, uint Param, uint Key, int duration)
+		{
+			if (busy)
+			{
+				return 0;
+			}
+			busy = true;
+			Thread thread = new Thread((ThreadStart)delegate
+			{
+				if (Param != 0)
+				{
+					SendMessage(GamePtr, WM_SYSKEYDOWN, Param, 0u);
+					SendMessage(GamePtr, WM_SYSKEYDOWN, Key, 0u);
+					Thread.Sleep(duration);
+					SendMessage(GamePtr, WM_SYSKEYUP, Param, 0u);
+					SendMessage(GamePtr, WM_SYSKEYUP, Key, 0u);
+				}
+				else
+				{
+					SendMessage(GamePtr, WM_KEYDOWN, Key, 0u);
+					Thread.Sleep(duration);
+					SendMessage(GamePtr, WM_KEYUP, Key, 0u);
+				}
+				busy = false;
+			});
+			thread.Start();
+			return 1;
+		}
+
+		public static uint Transcoding(string keyname)
+		{
+			try
+			{
+				VK vK = new VK();
+				uint num = 0u;
+				return Convert.ToUInt32(vK.GetType().GetField("VK_" + keyname).GetValue(vK));
+			}
+			catch (NullReferenceException)
+			{
+				return 0u;
+			}
+		}
+	}
 }

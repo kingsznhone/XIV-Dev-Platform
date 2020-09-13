@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,25 +10,25 @@ namespace KeyboardApi
 {
     public class KeyboardHook
     {
-        //é’©å­ç±»å‹ï¼šé”®ç›˜
-        private const int WH_KEYBOARD_LL = 13; //å…¨å±€é’©å­é”®ç›˜ä¸º13ï¼Œçº¿ç¨‹é’©å­é”®ç›˜ä¸º2
-        private const int WM_KEYDOWN = 0x0100; //é”®æŒ‰ä¸‹
-        private const int WM_KEYUP = 0x0101; //é”®å¼¹èµ·
-        //å…¨å±€ç³»ç»ŸæŒ‰é”®
+        //¹³×ÓÀàĞÍ£º¼üÅÌ
+        private const int WH_KEYBOARD_LL = 13; //È«¾Ö¹³×Ó¼üÅÌÎª13£¬Ïß³Ì¹³×Ó¼üÅÌÎª2
+        private const int WM_KEYDOWN = 0x0100; //¼ü°´ÏÂ
+        private const int WM_KEYUP = 0x0101; //¼üµ¯Æğ
+        //È«¾ÖÏµÍ³°´¼ü
         private const int WM_SYSKEYDOWN = 0x104;
         private const int WM_SYSKEYUP = 0x105;
-        //é”®ç›˜å¤„ç†å§”æ‰˜äº‹ä»¶,æ•è·é”®ç›˜è¾“å…¥ï¼Œè°ƒç”¨å§”æ‰˜æ–¹æ³•
+        //¼üÅÌ´¦ÀíÎ¯ÍĞÊÂ¼ş,²¶»ñ¼üÅÌÊäÈë£¬µ÷ÓÃÎ¯ÍĞ·½·¨
         private delegate int HookHandle(int nCode, int wParam, IntPtr lParam);
         private static HookHandle _keyBoardHookProcedure;
 
-        //å®¢æˆ·ç«¯é”®ç›˜å¤„ç†å§”æ‰˜äº‹ä»¶
-        public delegate void ProcessKeyHandle(int nCode, int wParam, HookStruct param, out bool handle);
+        //¿Í»§¶Ë¼üÅÌ´¦ÀíÎ¯ÍĞÊÂ¼ş
+        public delegate void ProcessKeyHandle(int nCode, int wParam, HookStructen.Param, out bool handle);
         private static ProcessKeyHandle _clientMethod = null;
 
-        //æ¥æ”¶SetWindowsHookExè¿”å›å€¼   åˆ¤æ–­æ˜¯å¦å®‰è£…é’©å­
+        //½ÓÊÕSetWindowsHookEx·µ»ØÖµ   ÅĞ¶ÏÊÇ·ñ°²×°¹³×Ó
         private static int _hHookValue = 0;
 
-        //Hookç»“æ„ å­˜å‚¨æŒ‰é”®ä¿¡æ¯çš„ç»“æ„ä½“
+        //Hook½á¹¹ ´æ´¢°´¼üĞÅÏ¢µÄ½á¹¹Ìå
         [StructLayout(LayoutKind.Sequential)]
         public class HookStruct
         {
@@ -39,20 +39,20 @@ namespace KeyboardApi
             public int dwExtraInfo;
         }
 
-        //å®‰è£…é’©å­
-        //idHookä¸º13ä»£è¡¨é”®ç›˜é’©å­ä¸º14ä»£è¡¨é¼ æ ‡é’©å­ï¼Œlpfnä¸ºå‡½æ•°æŒ‡é’ˆï¼ŒæŒ‡å‘éœ€è¦æ‰§è¡Œçš„å‡½æ•°ï¼ŒhIntanceä¸ºæŒ‡å‘è¿›ç¨‹å¿«çš„æŒ‡é’ˆï¼ŒthreadIdé»˜è®¤ä¸º0å°±å¯ä»¥äº†
+        //°²×°¹³×Ó
+        //idHookÎª13´ú±í¼üÅÌ¹³×ÓÎª14´ú±íÊó±ê¹³×Ó£¬lpfnÎªº¯ÊıÖ¸Õë£¬Ö¸ÏòĞèÒªÖ´ĞĞµÄº¯Êı£¬hIntanceÎªÖ¸Ïò½ø³Ì¿ìµÄÖ¸Õë£¬threadIdÄ¬ÈÏÎª0¾Í¿ÉÒÔÁË
         [DllImport("user32.dll")]
         private static extern int SetWindowsHookEx(int idHook, HookHandle lpfn, IntPtr hInstance, int threadId);
-        //å–æ¶ˆé’©å­
+        //È¡Ïû¹³×Ó
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern bool UnhookWindowsHookEx(int idHook);
-        //è°ƒç”¨ä¸‹ä¸€ä¸ªé’©å­
+        //µ÷ÓÃÏÂÒ»¸ö¹³×Ó
         [DllImport("user32.dll")]
         public static extern int CallNextHookEx(int idHook, int nCode, int wParam, IntPtr lParam);
-        //è·å–å½“å‰çº¿ç¨‹id
+        //»ñÈ¡µ±Ç°Ïß³Ìid
         [DllImport("kernel32.dll")]
         public static extern int GetCurrentThreadId();
-        //é€šè¿‡çº¿ç¨‹Id,è·å–è¿›ç¨‹å¿«
+        //Í¨¹ıÏß³ÌId,»ñÈ¡½ø³Ì¿ì
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetModuleHandle(String name);
 
@@ -61,12 +61,12 @@ namespace KeyboardApi
         public KeyboardHook() { }
 
         #region
-        //åŠ ä¸Šå®¢æˆ·ç«¯æ–¹æ³•çš„å§”æ‰˜çš„å®‰è£…é’©å­
+        //¼ÓÉÏ¿Í»§¶Ë·½·¨µÄÎ¯ÍĞµÄ°²×°¹³×Ó
         public void InstallHook(ProcessKeyHandle clientMethod)
         {
-            //å®¢æˆ·ç«¯å§”æ‰˜äº‹ä»¶ 
+            //¿Í»§¶ËÎ¯ÍĞÊÂ¼ş 
             _clientMethod = clientMethod;
-            //å®‰è£…é”®ç›˜é’©å­
+            //°²×°¼üÅÌ¹³×Ó
             if (_hHookValue == 0)
             {
                 _keyBoardHookProcedure = new HookHandle(GetHookProc);
@@ -79,7 +79,7 @@ namespace KeyboardApi
                     );
                 if (_hHookValue == 0)
                 {
-                    //è®¾ç½®é’©å­å¤±è´¥
+                    //ÉèÖÃ¹³×ÓÊ§°Ü
                     UninstallHook();
 
                 }
@@ -88,7 +88,7 @@ namespace KeyboardApi
         #endregion
 
 
-        //å–æ¶ˆé’©å­äº‹ä»¶
+        //È¡Ïû¹³×ÓÊÂ¼ş
         public void UninstallHook()
         {
             if (_hHookValue != 0)
@@ -103,17 +103,17 @@ namespace KeyboardApi
 
         private static int GetHookProc(int nCode, int wParam, IntPtr lParam)
         {
-            //å½“nCodeå¤§äº0ï¼Œå¹¶ä¸”æ—¶æŒ‰ä¸‹äº‹ä»¶æ—¶ä¸º1
+            //µ±nCode´óÓÚ0£¬²¢ÇÒÊ±°´ÏÂÊÂ¼şÊ±Îª1
             //if (nCode >= 0 && ((wParam == WM_SYSKEYDOWN) || (wParam == WM_KEYDOWN)))
             if (nCode >= 0)
             {
-                //å°†æŒ‰é”®ä¿¡æ¯è½¬æ¢ä¸ºç»“æ„ä½“
+                //½«°´¼üĞÅÏ¢×ª»»Îª½á¹¹Ìå
                 HookStruct hookStruc = (HookStruct)Marshal.PtrToStructure(lParam, typeof(HookStruct));
-                //æ˜¯å¦æ‹¦æˆªæŒ‰é”®çš„æ ‡è¯†ç¬¦ï¼Œé»˜è®¤ä¸æ‹¦æˆª
+                //ÊÇ·ñÀ¹½Ø°´¼üµÄ±êÊ¶·û£¬Ä¬ÈÏ²»À¹½Ø
                 bool handle = false;
-                //å®¢æˆ·ç«¯è°ƒç”¨  
-                _clientMethod(nCode, wParam, hookStruc, out handle); //å¦‚æœä¼ é€’äº†å®¢æˆ·ç«¯å§”æ‰˜ï¼Œå°±è°ƒç”¨
-                handle = false; //å¦‚æœè¿™ä¸ªhandleä¸ºfalseï¼Œåˆ™ä»£è¡¨ä¸æ‹¦æˆªæ­¤æ¬¡æŒ‰é”®ï¼ŒæŒ‰äº† windowsç­‰é”®ä¼šæ‰§è¡Œå®¢æˆ·ç«¯é”®å€¼æ˜¾ç¤ºï¼Œä½†æ˜¯åŒæ—¶ä¹Ÿä¼šäº§ç”Ÿè¯¥é”®æœ¬æœ‰çš„åŠŸèƒ½ã€‚
+                //¿Í»§¶Ëµ÷ÓÃ  
+                _clientMethod(nCode, wParam, hookStruc, out handle); //Èç¹û´«µİÁË¿Í»§¶ËÎ¯ÍĞ£¬¾Íµ÷ÓÃ
+                handle = false; //Èç¹ûÕâ¸öhandleÎªfalse£¬Ôò´ú±í²»À¹½Ø´Ë´Î°´¼ü£¬°´ÁË windowsµÈ¼ü»áÖ´ĞĞ¿Í»§¶Ë¼üÖµÏÔÊ¾£¬µ«ÊÇÍ¬Ê±Ò²»á²úÉú¸Ã¼ü±¾ÓĞµÄ¹¦ÄÜ¡£
 
                 if (handle) { return 1; }
             }

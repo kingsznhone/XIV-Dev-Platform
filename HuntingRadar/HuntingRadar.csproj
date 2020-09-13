@@ -59,8 +59,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MemoryReader">
-      <HintPath>..\MemoryReader\bin\Debug\MemoryReader.dll</HintPath>
+    <Reference Include="ProcessMemoryApi">
+      <HintPath>..\MemoryReader\bin\Debug\ProcessMemoryApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,13 +77,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Antenna.cs" />
-    <Compile Include="Combatant.cs" />
+    <Compile Include="Models\Combatant.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Effect.cs" />
+    <Compile Include="Models\FlyingText.cs" />
+    <Compile Include="Models\FlyingTextEntry.cs" />
+    <Compile Include="Models\IncomingAbility.cs" />
+    <Compile Include="Models\NetworkBuff.cs" />
+    <Compile Include="Models\OutgoingAbility.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

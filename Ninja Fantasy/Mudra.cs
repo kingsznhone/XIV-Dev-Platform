@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using KeyboardApi;
-namespace Ninja_Fantasy
+namespace Ninja_Assistant
 {
     class Mudra
     {
@@ -33,67 +33,66 @@ namespace Ninja_Fantasy
             public uint Param;
             public uint vK;
         }
-        Ten t;
-        Chi c;
-        Jin j;
-        Ninjutsu n;
+        Ten ten;
+        Chi chi;
+        Jin jin;
+        Ninjutsu nj;
         IntPtr Gameptr;
         bool Activated = false;
         public void Install(IntPtr Gameptr, string[] setting)
         {
             this.Gameptr = Gameptr;
             
-            t.Param = Simulator.Transcoding(setting[0]);
-            t.vK = Simulator.Transcoding(setting[1]);
+            ten.Param = Simulator.Transcoding(setting[0]);
+            ten.vK = Simulator.Transcoding(setting[1]);
 
-            c.Param = Simulator.Transcoding(setting[2]);
-            c.vK = Simulator.Transcoding(setting[3]);
+            chi.Param = Simulator.Transcoding(setting[2]);
+            chi.vK = Simulator.Transcoding(setting[3]);
 
-            j.Param = Simulator.Transcoding(setting[4]);
-            j.vK = Simulator.Transcoding(setting[5]);
+            jin.Param = Simulator.Transcoding(setting[4]);
+            jin.vK = Simulator.Transcoding(setting[5]);
 
-            n.Param = Simulator.Transcoding(setting[6]);
-            n.vK = Simulator.Transcoding(setting[7]);
+            nj.Param = Simulator.Transcoding(setting[6]);
+            nj.vK = Simulator.Transcoding(setting[7]);
         }
 
         public void Uninstall()
         {
-            t.Param = 0;
-            t.vK = 0;
-            c.Param = 0;
-            c.vK = 0;
-            j.Param = 0;
-            j.vK = 0;
-            n.Param = 0;
-            n.vK = 0;
+            ten.Param = 0;
+            ten.vK = 0;
+            chi.Param = 0;
+            chi.vK = 0;
+            jin.Param = 0;
+            jin.vK = 0;
+            nj.Param = 0;
+            nj.vK = 0;
         }
 
         public void Huton()
         {
             if (!Activated)
+            { 
+                for (int i = 0; i < 1; i++)
+                {
+                    Simulator.Press(Gameptr, jin.Param, jin.vK, duration);
+                }
+            Thread.Sleep(300);
+            for (int i = 0; i < 1; i++)
             {
-                Thread.Sleep(100);
-                for (int i = 0; i < 1; i++)
-                {
-                    Simulator.Press(Gameptr, j.Param, j.vK,duration);
-                }
-                Thread.Sleep(300);
-                for (int i = 0; i < 1; i++)
-                {
-                    Simulator.Press(Gameptr, c.Param, c.vK,duration);
-                }
-                Thread.Sleep(400);
-                for (int i = 0; i < 1; i++)
-                {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
-                }
-                Thread.Sleep(400);
-                for (int i = 0; i < 10; i++)
-                {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
-                }
-                Activated = false;
+                Simulator.Press(Gameptr, chi.Param, chi.vK, duration);
             }
+            Thread.Sleep(400);
+            for (int i = 0; i < 1; i++)
+            {
+                Simulator.Press(Gameptr, ten.Param, ten.vK, duration);
+            }
+            Thread.Sleep(400);
+            for (int i = 0; i < 10; i++)
+            {
+                Simulator.Press(Gameptr, nj.Param, nj.vK, duration);
+            }
+            Activated = false;
+        }
 
         }
 
@@ -101,28 +100,27 @@ namespace Ninja_Fantasy
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, j.Param, j.vK,duration);
+                    Simulator.Press(Gameptr, jin.Param, jin.vK,duration);
                 }
 
                 Thread.Sleep(300);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, c.Param, c.vK,duration);
+                    Simulator.Press(Gameptr, chi.Param, chi.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
@@ -132,28 +130,27 @@ namespace Ninja_Fantasy
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(300);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, c.Param, c.vK,duration);
+                    Simulator.Press(Gameptr, chi.Param, chi.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, j.Param, j.vK,duration);
+                    Simulator.Press(Gameptr, jin.Param, jin.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
@@ -163,22 +160,21 @@ namespace Ninja_Fantasy
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(300);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, c.Param, c.vK,duration);
+                    Simulator.Press(Gameptr, chi.Param, chi.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
@@ -188,42 +184,65 @@ namespace Ninja_Fantasy
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, j.Param, j.vK,duration);
+                    Simulator.Press(Gameptr, jin.Param, jin.vK,duration);
                 }
 
                 Thread.Sleep(300);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(400);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
         }
 
+        public void Hyoton()
+        {
+            if (!Activated)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    Simulator.Press(Gameptr, chi.Param, chi.vK, duration);
+                }
+
+                Thread.Sleep(300);
+                for (int i = 0; i < 1; i++)
+                {
+                    Simulator.Press(Gameptr, jin.Param, jin.vK, duration);
+                }
+
+                Thread.Sleep(400);
+                for (int i = 0; i < 10; i++)
+                {
+                    Simulator.Press(Gameptr, nj.Param, nj.vK, duration);
+                }
+                Activated = false;
+            }
+        }
+    
+
         public void Shuriken()
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(300);
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
@@ -233,40 +252,39 @@ namespace Ninja_Fantasy
         {
             if (!Activated)
             {
-                Thread.Sleep(100);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, t.Param, t.vK,duration);
+                    Simulator.Press(Gameptr, ten.Param, ten.vK,duration);
                 }
 
                 Thread.Sleep(300);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
 
                 Thread.Sleep(500);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, c.Param, c.vK,duration);
+                    Simulator.Press(Gameptr, chi.Param, chi.vK,duration);
                 }
 
                 Thread.Sleep(500);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
 
                 Thread.Sleep(500);
                 for (int i = 0; i < 1; i++)
                 {
-                    Simulator.Press(Gameptr, j.Param, j.vK,duration);
+                    Simulator.Press(Gameptr, jin.Param, jin.vK,duration);
                 }
 
                 Thread.Sleep(500);
                 for (int i = 0; i < 10; i++)
                 {
-                    Simulator.Press(Gameptr, n.Param, n.vK,duration);
+                    Simulator.Press(Gameptr, nj.Param, nj.vK,duration);
                 }
                 Activated = false;
             }
