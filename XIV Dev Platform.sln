@@ -19,13 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mscan", "Mscan\Mscan.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HuntingRadar", "HuntingRadar\HuntingRadar.csproj", "{57243252-4A5A-41F5-9409-7164DC1DD5E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACTHacker", "ACTHacker\ACTHacker.csproj", "{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardHook", "KeyboardHook\KeyboardHook.csproj", "{B29730D6-6571-4298-BF41-DAED42AB8B1E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSearchApi", "ScreenSearchApi\ScreenSearchApi.csproj", "{D15701CE-A799-48EE-94F4-B1FD82ED8893}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "自动进本助手", "自动进本\自动进本助手.csproj", "{DCFC4448-E6EE-4653-ADF6-613548ACEF71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACTDecompile", "ACTDecompile\ACTDecompile.csproj", "{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,14 +99,6 @@ Global
 		{57243252-4A5A-41F5-9409-7164DC1DD5E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57243252-4A5A-41F5-9409-7164DC1DD5E9}.Release|x64.ActiveCfg = Release|x64
 		{57243252-4A5A-41F5-9409-7164DC1DD5E9}.Release|x64.Build.0 = Release|x64
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|x64.Build.0 = Debug|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.ActiveCfg = Release|Any CPU
-		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.Build.0 = Release|Any CPU
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B29730D6-6571-4298-BF41-DAED42AB8B1E}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -131,6 +123,14 @@ Global
 		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|x64.ActiveCfg = Release|Any CPU
 		{DCFC4448-E6EE-4653-ADF6-613548ACEF71}.Release|x64.Build.0 = Release|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Debug|x64.Build.0 = Debug|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.ActiveCfg = Release|Any CPU
+		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
