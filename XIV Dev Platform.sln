@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "自动进本助手", "自�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACTDecompile", "ACTDecompile\ACTDecompile.csproj", "{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YSdubug", "YSdubug\YSdubug.csproj", "{9300C055-653B-4536-AB08-4405654676C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,14 @@ Global
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.ActiveCfg = Release|Any CPU
 		{3B99D6D3-2A3F-433D-B2B9-82923414CFA0}.Release|x64.Build.0 = Release|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Debug|x64.Build.0 = Debug|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Release|x64.ActiveCfg = Release|Any CPU
+		{9300C055-653B-4536-AB08-4405654676C6}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

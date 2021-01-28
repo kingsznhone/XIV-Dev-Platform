@@ -47,9 +47,16 @@ namespace ProcessMemoryApi
         public Process process { get; set; }
         public IntPtr handle;
         public IntPtr pBaseAddress;
-        private IntPtr pEndAddress;
-        private long ModuleSize;
-        private byte[] ModuleCopy;
+        public IntPtr pEndAddress;
+        public long ModuleSize;
+        public byte[] ModuleCopy;
+
+        public bool FindProcess(int id)
+        {
+            process = Process.GetProcessById(id);
+            return (process != null) ? true : false;
+        }
+
         public bool FindProcess(string name)
         {
             process = Process.GetProcessesByName(name).ToList().FirstOrDefault();

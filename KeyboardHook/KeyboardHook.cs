@@ -23,7 +23,7 @@ namespace KeyboardHook
         private static HookHandle _keyBoardHookProcedure;
 
         //客户端键盘处理委托事件
-        public delegate void ProcessKeyHandle(int nCode,int wParam,HookStructen.Param, out bool handle);
+        public delegate void ProcessKeyHandle(int nCode,int wParam,HookStruct Param, out bool handle);
         private static ProcessKeyHandle _clientMethod = null;
 
         //接收SetWindowsHookEx返回值   判断是否安装钩子
