@@ -11,6 +11,42 @@ using System.Windows.Forms;
 
 namespace TowerEx_Assistant
 {
+    public enum NetworkMode
+    {
+        Relative = 0,
+        Polar =1,
+
+    }
+
+    public class NetworkCoordBuffer
+    {
+        public string Mode { get; set; }
+        public float X { get; set; }
+        public float Z { get; set; }
+        public float Y { get; set; }
+        public float Rho { get; set; }
+        public float Theta { get; set; }
+
+        public NetworkCoordBuffer()
+        {
+            Mode = "Relative";
+            X = 0;
+            Y = 0;
+            Z = 0;
+            Rho = 0;
+            Theta = 0;
+        }
+
+        public Coordinate GetCoordinate()
+        {
+            Coordinate C = new Coordinate();
+            C.X = X;
+            C.Y = Y;
+            C.Z = Z;
+            return C;
+        }
+    }
+
     public class PicoHttpServer
     {
         string[] prefixes;
@@ -27,24 +63,21 @@ namespace TowerEx_Assistant
             server.Start();
         }
 
-        public async Task<Coordinate> StartListen()
+        public async Task<NetworkCoordBuffer> StartListen()
         {
             HttpListenerContext context = await server.GetContextAsync();
             return RequestData(context.Request);
         }
 
-        public Coordinate RequestData(HttpListenerRequest request)
+        public NetworkCoordBuffer RequestData(HttpListenerRequest request)
         {
             if (!request.HasEntityBody) return null;
 
             StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding);
-
-            // Convert the data to a string and display it on the console.
             string s = reader.ReadToEnd();
             reader.Close();
             //return s;
-
-            return JsonSerializer.Deserialize<Coordinate>(s);
+            return JsonSerializer.Deserialize<NetworkCoordBuffer>(s);
             // If you are finished with the request, it should be closed also.
         }
     }

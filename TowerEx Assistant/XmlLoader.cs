@@ -28,8 +28,7 @@ namespace TowerEx_Assistant
 
 		public void OutputXML(XmlDocument xml, string path)
 		{
-			File.Delete(path);
-			FileStream fileStream = new FileStream(path, FileMode.CreateNew);
+			FileStream fileStream = new FileStream(path, FileMode.Create);
 			xml.Save(fileStream);
 			fileStream.Close();
 		}
@@ -41,9 +40,10 @@ namespace TowerEx_Assistant
 				sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 				sb.Append("<Root>");
 				sb.Append("</Root>");
-				StreamWriter streamWriter = new StreamWriter(path, append: false, Encoding.UTF8);
-				streamWriter.Write(sb.ToString());
-				streamWriter.Close();
+				using (StreamWriter streamWriter = new StreamWriter(path, append: false, Encoding.UTF8))
+                {
+					streamWriter.Write(sb.ToString());
+				}
 			}
 			catch (Exception)
 			{

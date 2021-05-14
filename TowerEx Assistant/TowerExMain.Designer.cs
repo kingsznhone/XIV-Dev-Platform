@@ -49,10 +49,10 @@
             this.Yvalue = new System.Windows.Forms.Label();
             this.Zvalue = new System.Windows.Forms.Label();
             this.ModeSelect = new System.Windows.Forms.GroupBox();
-            this.CheckACS = new System.Windows.Forms.RadioButton();
-            this.PCSMode = new System.Windows.Forms.RadioButton();
-            this.CCSMode = new System.Windows.Forms.RadioButton();
-            this.MultipleP = new System.Windows.Forms.TrackBar();
+            this.AbsoluteModeCheck = new System.Windows.Forms.RadioButton();
+            this.PolarModeCheck = new System.Windows.Forms.RadioButton();
+            this.RelativeModeCheck = new System.Windows.Forms.RadioButton();
+            this.MultipleRho = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.Pvalue = new System.Windows.Forms.Label();
             this.RollBackBtn = new System.Windows.Forms.Button();
@@ -85,7 +85,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.MultipleY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleZ)).BeginInit();
             this.ModeSelect.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MultipleP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MultipleRho)).BeginInit();
             this.InputCoord.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -260,9 +260,9 @@
             // 
             // ModeSelect
             // 
-            this.ModeSelect.Controls.Add(this.CheckACS);
-            this.ModeSelect.Controls.Add(this.PCSMode);
-            this.ModeSelect.Controls.Add(this.CCSMode);
+            this.ModeSelect.Controls.Add(this.AbsoluteModeCheck);
+            this.ModeSelect.Controls.Add(this.PolarModeCheck);
+            this.ModeSelect.Controls.Add(this.RelativeModeCheck);
             this.ModeSelect.Location = new System.Drawing.Point(366, 12);
             this.ModeSelect.Name = "ModeSelect";
             this.ModeSelect.Size = new System.Drawing.Size(368, 70);
@@ -270,52 +270,52 @@
             this.ModeSelect.TabStop = false;
             this.ModeSelect.Text = "模式选择";
             // 
-            // CheckACS
+            // AbsoluteModeCheck
             // 
-            this.CheckACS.AutoSize = true;
-            this.CheckACS.Location = new System.Drawing.Point(245, 33);
-            this.CheckACS.Name = "CheckACS";
-            this.CheckACS.Size = new System.Drawing.Size(113, 31);
-            this.CheckACS.TabIndex = 1;
-            this.CheckACS.Text = "绝对坐标";
-            this.CheckACS.UseVisualStyleBackColor = true;
-            this.CheckACS.CheckedChanged += new System.EventHandler(this.CheckACS_CheckedChanged);
+            this.AbsoluteModeCheck.AutoSize = true;
+            this.AbsoluteModeCheck.Location = new System.Drawing.Point(245, 33);
+            this.AbsoluteModeCheck.Name = "AbsoluteModeCheck";
+            this.AbsoluteModeCheck.Size = new System.Drawing.Size(113, 31);
+            this.AbsoluteModeCheck.TabIndex = 1;
+            this.AbsoluteModeCheck.Text = "绝对坐标";
+            this.AbsoluteModeCheck.UseVisualStyleBackColor = true;
+            this.AbsoluteModeCheck.CheckedChanged += new System.EventHandler(this.AbsoluteModeCheck_CheckedChanged);
             // 
-            // PCSMode
+            // PolarModeCheck
             // 
-            this.PCSMode.AutoSize = true;
-            this.PCSMode.Location = new System.Drawing.Point(146, 33);
-            this.PCSMode.Name = "PCSMode";
-            this.PCSMode.Size = new System.Drawing.Size(93, 31);
-            this.PCSMode.TabIndex = 1;
-            this.PCSMode.Text = "极坐标";
-            this.PCSMode.UseVisualStyleBackColor = true;
-            this.PCSMode.CheckedChanged += new System.EventHandler(this.CheckPCS_CheckedChanged);
+            this.PolarModeCheck.AutoSize = true;
+            this.PolarModeCheck.Location = new System.Drawing.Point(146, 33);
+            this.PolarModeCheck.Name = "PolarModeCheck";
+            this.PolarModeCheck.Size = new System.Drawing.Size(93, 31);
+            this.PolarModeCheck.TabIndex = 1;
+            this.PolarModeCheck.Text = "极坐标";
+            this.PolarModeCheck.UseVisualStyleBackColor = true;
+            this.PolarModeCheck.CheckedChanged += new System.EventHandler(this.PolarModeCheck_CheckedChanged);
             // 
-            // CCSMode
+            // RelativeModeCheck
             // 
-            this.CCSMode.AutoSize = true;
-            this.CCSMode.Checked = true;
-            this.CCSMode.Location = new System.Drawing.Point(27, 33);
-            this.CCSMode.Name = "CCSMode";
-            this.CCSMode.Size = new System.Drawing.Size(113, 31);
-            this.CCSMode.TabIndex = 0;
-            this.CCSMode.TabStop = true;
-            this.CCSMode.Text = "直角坐标";
-            this.CCSMode.UseVisualStyleBackColor = true;
-            this.CCSMode.CheckedChanged += new System.EventHandler(this.CheckCCS_CheckedChanged);
+            this.RelativeModeCheck.AutoSize = true;
+            this.RelativeModeCheck.Checked = true;
+            this.RelativeModeCheck.Location = new System.Drawing.Point(27, 33);
+            this.RelativeModeCheck.Name = "RelativeModeCheck";
+            this.RelativeModeCheck.Size = new System.Drawing.Size(113, 31);
+            this.RelativeModeCheck.TabIndex = 0;
+            this.RelativeModeCheck.TabStop = true;
+            this.RelativeModeCheck.Text = "相对坐标";
+            this.RelativeModeCheck.UseVisualStyleBackColor = true;
+            this.RelativeModeCheck.CheckedChanged += new System.EventHandler(this.RelativeModeCheck_CheckedChanged);
             // 
-            // MultipleP
+            // MultipleRho
             // 
-            this.MultipleP.Enabled = false;
-            this.MultipleP.Location = new System.Drawing.Point(420, 436);
-            this.MultipleP.Maximum = 100;
-            this.MultipleP.Minimum = -100;
-            this.MultipleP.Name = "MultipleP";
-            this.MultipleP.Size = new System.Drawing.Size(457, 56);
-            this.MultipleP.TabIndex = 8;
-            this.MultipleP.TickFrequency = 10;
-            this.MultipleP.Scroll += new System.EventHandler(this.MultipleP_Scroll);
+            this.MultipleRho.Enabled = false;
+            this.MultipleRho.Location = new System.Drawing.Point(420, 436);
+            this.MultipleRho.Maximum = 100;
+            this.MultipleRho.Minimum = -100;
+            this.MultipleRho.Name = "MultipleRho";
+            this.MultipleRho.Size = new System.Drawing.Size(457, 56);
+            this.MultipleRho.TabIndex = 8;
+            this.MultipleRho.TickFrequency = 10;
+            this.MultipleRho.Scroll += new System.EventHandler(this.MultipleP_Scroll);
             // 
             // label5
             // 
@@ -408,6 +408,7 @@
             this.DirectX.TabIndex = 16;
             this.DirectX.Text = "0";
             this.DirectX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.DirectX.Enter += new System.EventHandler(this.DirectCoord_Enter);
             // 
             // DirectY
             // 
@@ -417,6 +418,7 @@
             this.DirectY.TabIndex = 16;
             this.DirectY.Text = "0";
             this.DirectY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.DirectY.Enter += new System.EventHandler(this.DirectCoord_Enter);
             // 
             // DirectZ
             // 
@@ -426,6 +428,7 @@
             this.DirectZ.TabIndex = 16;
             this.DirectZ.Text = "0";
             this.DirectZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.DirectZ.Enter += new System.EventHandler(this.DirectCoord_Enter);
             // 
             // InputCoord
             // 
@@ -480,7 +483,7 @@
             this.CopyCoord.TabIndex = 1;
             this.CopyCoord.Text = "复制当前坐标";
             this.CopyCoord.UseVisualStyleBackColor = false;
-            this.CopyCoord.Click += new System.EventHandler(this.CopyCoord_Click);
+            this.CopyCoord.Click += new System.EventHandler(this.CopyCoordBtn_Click);
             // 
             // MapIDLabel
             // 
@@ -638,7 +641,7 @@
             this.AddCoordBtn.TabIndex = 28;
             this.AddCoordBtn.Text = "新坐标";
             this.AddCoordBtn.UseVisualStyleBackColor = true;
-            this.AddCoordBtn.Click += new System.EventHandler(this.AddNewCoord_Click);
+            this.AddCoordBtn.Click += new System.EventHandler(this.AddNewCoordBtn_Click);
             // 
             // NetworkStatus
             // 
@@ -682,7 +685,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.MultipleZ);
-            this.Controls.Add(this.MultipleP);
+            this.Controls.Add(this.MultipleRho);
             this.Controls.Add(this.MultipleY);
             this.Controls.Add(this.MultipleX);
             this.Controls.Add(this.DestZ);
@@ -705,14 +708,14 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "TowerExMain";
-            this.Text = "一键极楼神 v5.2.2【ZNH Industry™】";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Text = "一键极楼神 v5.3【ZNH Industry™】";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.MultipleX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MultipleZ)).EndInit();
             this.ModeSelect.ResumeLayout(false);
             this.ModeSelect.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MultipleP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MultipleRho)).EndInit();
             this.InputCoord.ResumeLayout(false);
             this.InputCoord.PerformLayout();
             this.ResumeLayout(false);
@@ -740,9 +743,9 @@
         private System.Windows.Forms.Label Yvalue;
         private System.Windows.Forms.Label Zvalue;
         private System.Windows.Forms.GroupBox ModeSelect;
-        private System.Windows.Forms.RadioButton PCSMode;
-        private System.Windows.Forms.RadioButton CCSMode;
-        private System.Windows.Forms.TrackBar MultipleP;
+        private System.Windows.Forms.RadioButton PolarModeCheck;
+        private System.Windows.Forms.RadioButton RelativeModeCheck;
+        private System.Windows.Forms.TrackBar MultipleRho;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label Pvalue;
         private System.Windows.Forms.Button RollBackBtn;
@@ -751,7 +754,7 @@
         private System.Windows.Forms.Label DestX;
         private System.Windows.Forms.Label DestY;
         private System.Windows.Forms.Label DestZ;
-        private System.Windows.Forms.RadioButton CheckACS;
+        private System.Windows.Forms.RadioButton AbsoluteModeCheck;
         private System.Windows.Forms.TextBox DirectX;
         private System.Windows.Forms.TextBox DirectY;
         private System.Windows.Forms.TextBox DirectZ;

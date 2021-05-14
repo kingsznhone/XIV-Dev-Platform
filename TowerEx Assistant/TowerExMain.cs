@@ -49,17 +49,17 @@ namespace TowerEx_Assistant
         const long Offset_RAD = 0xB0;
 
         private long ZoneIDPtr;
-        
-        
+
+
 
         private long pFlyModule;
-        const long Fly_X =0x10;
-        const long Fly_Z=0x14;
+        const long Fly_X = 0x10;
+        const long Fly_Z = 0x14;
         const long Fly_Y = 0x18;
 
         Coordinate CurrentCoord = new Coordinate();
-        Coordinate DeltaS = new Coordinate();
-        Coordinate Destination = new Coordinate();
+        Coordinate DeltaCoord = new Coordinate();
+        Coordinate DestinationCoord = new Coordinate();
         List<Coordinate> HistoryRecord = new List<Coordinate>();
 
         ProcessMemoryReader mReader = new ProcessMemoryReader();
@@ -86,7 +86,7 @@ namespace TowerEx_Assistant
                 loader = new XmlLoader();
                 Loadxml();
 
-                
+
                 timer1.Enabled = true;
                 int port = 7410;
                 server = new PicoHttpServer(port);
@@ -94,10 +94,10 @@ namespace TowerEx_Assistant
                 Rx.Start();
                 NetworkStatus.Text = string.Format("正在监听本地端口{0}", port);
             }
-            else 
-            { 
+            else
+            {
                 MessageBox.Show("游戏未运行", "严重错误：上溢", MessageBoxButtons.OK);
-                Environment.Exit(0); 
+                Environment.Exit(0);
             }
 
         }
@@ -140,7 +140,7 @@ namespace TowerEx_Assistant
             value = mReader.ReadByteArray((IntPtr)(pModule + Offset_Z), 4);
             CurrentCoord.Z = BitConverter.ToSingle(value, 0);
             value = mReader.ReadByteArray((IntPtr)(pModule + Offset_RAD), 4);
-            CurrentCoord.RAD = BitConverter.ToSingle(value, 0);
+            CurrentCoord.Theta = BitConverter.ToSingle(value, 0);
         }
 
         public void ReadMapID()
@@ -150,37 +150,36 @@ namespace TowerEx_Assistant
 
         public void CalcDelta()
         {
-            if (CCSMode.Checked == true)
+            if (RelativeModeCheck.Checked == true)
             {
-                DeltaS.X = Convert.ToSingle(MultipleX.Value);
-                DeltaS.Y = Convert.ToSingle(MultipleY.Value);
-                DeltaS.Z = Convert.ToSingle(MultipleZ.Value);
+                DeltaCoord.X = Convert.ToSingle(MultipleX.Value);
+                DeltaCoord.Y = Convert.ToSingle(MultipleY.Value);
+                DeltaCoord.Z = Convert.ToSingle(MultipleZ.Value);
+            }
+            else if (PolarModeCheck.Checked == true)
+            {
+                DeltaCoord.X = Convert.ToSingle(Math.Sin(Convert.ToDouble(CurrentCoord.Theta)) * (float)MultipleRho.Value);
+                DeltaCoord.Y = Convert.ToSingle(Math.Cos(Convert.ToDouble(CurrentCoord.Theta)) * (float)MultipleRho.Value);
+                DeltaCoord.Z = MultipleZ.Value;
             }
             else
             {
-                DeltaS.X = Convert.ToSingle(Math.Sin(Convert.ToDouble(CurrentCoord.RAD)) * (float)MultipleP.Value);
-                DeltaS.Y = Convert.ToSingle(Math.Cos(Convert.ToDouble(CurrentCoord.RAD)) * (float)MultipleP.Value);
-                DeltaS.Z = MultipleZ.Value;
+                try
+                {
+                    DeltaCoord.X = Convert.ToSingle(DirectX.Text) - Convert.ToSingle(CurrentCoord.X);
+                    DeltaCoord.Y = Convert.ToSingle(DirectY.Text) - Convert.ToSingle(CurrentCoord.Y);
+                    DeltaCoord.Z = Convert.ToSingle(DirectZ.Text) - Convert.ToSingle(CurrentCoord.Z);
+                }
+                catch { }
             }
-
         }
 
         public void CalcDest()
         {
-            Destination.X = CurrentCoord.X + DeltaS.X;
-            Destination.Y = CurrentCoord.Y + DeltaS.Y;
-            Destination.Z = CurrentCoord.Z + DeltaS.Z;
+            DestinationCoord = CurrentCoord + DeltaCoord;
         }
 
-        public void SaveRollback()
-        {
-            Coordinate Buffer = new Coordinate();
-            Buffer.X = CurrentCoord.X;
-            Buffer.Y = CurrentCoord.Y;
-            Buffer.Z = CurrentCoord.Z;
-            HistoryRecord.Add(Buffer);
-        }
-
+        #region UI
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -199,18 +198,25 @@ namespace TowerEx_Assistant
             XLabel.Text = "X : " + Convert.ToString(Math.Round(CurrentCoord.X, 2));
             YLabel.Text = "Y : " + Convert.ToString(Math.Round(CurrentCoord.Y, 2));
             ZLabel.Text = "Z : " + Convert.ToString(Math.Round(CurrentCoord.Z, 2));
-            RADLabel.Text = "RAD : " + Convert.ToString(Math.Round(CurrentCoord.RAD, 2));
-            DeltaX.Text = "△X : " + Convert.ToString(Math.Round(DeltaS.X, 2));
-            DeltaY.Text = "△Y : " + Convert.ToString(Math.Round(DeltaS.Y, 2));
-            DeltaZ.Text = "△Z : " + Convert.ToString(Math.Round(DeltaS.Z, 2));
-            DestX.Text = "DestX : " + Convert.ToString(Math.Round(Destination.X, 2));
-            DestY.Text = "DestY : " + Convert.ToString(Math.Round(Destination.Y, 2));
-            DestZ.Text = "DestZ : " + Convert.ToString(Math.Round(Destination.Z, 2));
+            RADLabel.Text = "RAD : " + Convert.ToString(Math.Round(CurrentCoord.Theta, 2));
+            DeltaX.Text = "△X : " + Convert.ToString(Math.Round(DeltaCoord.X, 2));
+            DeltaY.Text = "△Y : " + Convert.ToString(Math.Round(DeltaCoord.Y, 2));
+            DeltaZ.Text = "△Z : " + Convert.ToString(Math.Round(DeltaCoord.Z, 2));
+            DestX.Text = "DestX : " + Convert.ToString(Math.Round(DestinationCoord.X, 2));
+            DestY.Text = "DestY : " + Convert.ToString(Math.Round(DestinationCoord.Y, 2));
+            DestZ.Text = "DestZ : " + Convert.ToString(Math.Round(DestinationCoord.Z, 2));
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        public void CheckMaximumDist()
         {
-            Environment.Exit(0);
+            if (Math.Pow(MultipleX.Value, 2) + Math.Pow(MultipleY.Value, 2) >= 225 || Math.Abs(MultipleRho.Value) >= 15)
+            {
+                MaxDistAlert.Visible = true;
+            }
+            else
+            {
+                MaxDistAlert.Visible = false;
+            }
         }
 
         public void Teleport(Coordinate coord)
@@ -225,14 +231,23 @@ namespace TowerEx_Assistant
             //debugBox.AppendText(jsonString + Environment.NewLine);
         }
 
+        public void SaveRollback()
+        {
+            Coordinate Buffer = new Coordinate();
+            Buffer.X = CurrentCoord.X;
+            Buffer.Y = CurrentCoord.Y;
+            Buffer.Z = CurrentCoord.Z;
+            HistoryRecord.Add(Buffer);
+        }
+
         private void TP_Click(object sender, EventArgs e)
         {
             SaveRollback();
             RollBackBtn.Enabled = true;
 
-            if (CCSMode.Checked || PCSMode.Checked)
+            if (RelativeModeCheck.Checked || PolarModeCheck.Checked)
             {
-                Teleport(Destination);
+                Teleport(DestinationCoord);
                 return;
             }
             try
@@ -246,18 +261,6 @@ namespace TowerEx_Assistant
             catch
             {
                 MessageBox.Show("请输入数字", "坐标格式错误", MessageBoxButtons.OK);
-            }
-        }
-
-        public void CheckMaximumDist()
-        {
-            if (Math.Pow(MultipleX.Value, 2) + Math.Pow(MultipleY.Value, 2) >= 225 || Math.Abs(MultipleP.Value) >= 15)
-            {
-                MaxDistAlert.Visible = true;
-            }
-            else
-            {
-                MaxDistAlert.Visible = false;
             }
         }
 
@@ -278,7 +281,7 @@ namespace TowerEx_Assistant
 
         private void MultipleP_Scroll(object sender, EventArgs e)
         {
-            Pvalue.Text = Convert.ToString(MultipleP.Value);
+            Pvalue.Text = Convert.ToString(MultipleRho.Value);
         }
 
         private void RollBackBtn_Click(object sender, EventArgs e)
@@ -302,44 +305,46 @@ namespace TowerEx_Assistant
             Yvalue.Text = "0";
             MultipleZ.Value = 0;
             Zvalue.Text = "0";
-            MultipleP.Value = 0;
+            MultipleRho.Value = 0;
             Pvalue.Text = "0";
-            CCSMode.Checked = true;
+            RelativeModeCheck.Checked = true;
         }
 
-        private void CheckCCS_CheckedChanged(object sender, EventArgs e)
+        private void RelativeModeCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (CCSMode.Checked == true)
+            if (RelativeModeCheck.Checked == true)
             {
                 MultipleX.Enabled = true;
                 MultipleY.Enabled = true;
                 MultipleZ.Enabled = true;
-                MultipleP.Enabled = false;
+                MultipleRho.Enabled = false;
             }
         }
 
-        private void CheckPCS_CheckedChanged(object sender, EventArgs e)
+        private void PolarModeCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (PCSMode.Checked == true)
+            if (PolarModeCheck.Checked == true)
             {
                 MultipleX.Enabled = false;
                 MultipleY.Enabled = false;
                 MultipleZ.Enabled = true;
-                MultipleP.Enabled = true;
+                MultipleRho.Enabled = true;
             }
         }
 
-        private void CheckACS_CheckedChanged(object sender, EventArgs e)
+        private void AbsoluteModeCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckACS.Checked == true)
+            if (AbsoluteModeCheck.Checked == true)
             {
                 MultipleX.Enabled = false;
                 MultipleY.Enabled = false;
                 MultipleZ.Enabled = false;
-                MultipleP.Enabled = false;
+                MultipleRho.Enabled = false;
             }
         }
+        #endregion
 
+        #region Saved Coord Ctrl
         private void Loadxml()
         {
             CoordXML = loader.Load(CoordDataPath);
@@ -390,7 +395,7 @@ namespace TowerEx_Assistant
             }
         }
 
-        private void AddNewCoord_Click(object sender, EventArgs e)
+        private void AddNewCoordBtn_Click(object sender, EventArgs e)
         {
             try
             {
@@ -413,7 +418,7 @@ namespace TowerEx_Assistant
                     TreeviewAreaPath = XMLPath;
                 }
 
-                XmlElement newChild = MakeNewelement(NewCoordName);
+                XmlElement newChild = MakeNewElement(NewCoordName);
                 foreach (XmlNode childNode in CoordXML.SelectSingleNode(TreeviewAreaPath).ChildNodes)
                 {
                     if (childNode.Name == NewCoordName)
@@ -442,7 +447,7 @@ namespace TowerEx_Assistant
             }
         }
 
-        private XmlElement MakeNewelement(string name)
+        private XmlElement MakeNewElement(string name)
         {
             XmlElement xmlElement = CoordXML.CreateElement(name);
             XmlAttribute xmlAttribute = CoordXML.CreateAttribute("Class");
@@ -486,13 +491,20 @@ namespace TowerEx_Assistant
             }
         }
 
-        private void CopyCoord_Click(object sender, EventArgs e)
+        private void DirectCoord_Enter(object sender, EventArgs e)
+        {
+            AbsoluteModeCheck.Checked = true;
+        }
+
+        private void CopyCoordBtn_Click(object sender, EventArgs e)
         {
             DirectX.Text = Convert.ToString(CurrentCoord.X);
             DirectY.Text = Convert.ToString(CurrentCoord.Y);
             DirectZ.Text = Convert.ToString(CurrentCoord.Z);
         }
+        #endregion
 
+        #region Coord Lock
         private void CoordLock_CheckedChanged(object sender, EventArgs e)
         {
             if (CoordLock.Checked == true)
@@ -563,6 +575,7 @@ namespace TowerEx_Assistant
             Configuration.Default.ModShift = checkShift.Checked;
             Configuration.Default.ModKey = HKcombo.Text;
         }
+        #endregion
 
         private async void NetworkEvent()
         {
@@ -571,18 +584,39 @@ namespace TowerEx_Assistant
             {
                 try
                 {
-                    Coordinate coord = await server.StartListen();
+                    NetworkCoordBuffer coordbuffer = await server.StartListen();
                     Action refresh = delegate ()
                     {
-                        string jsonString = JsonSerializer.Serialize(coord);
+                        string jsonString = JsonSerializer.Serialize(coordbuffer);
                         //debugBox.AppendText(jsonString + Environment.NewLine);
                     };
                     Invoke(refresh);
-                    Teleport(coord);
+                    Coordinate NetCoord = coordbuffer.GetCoordinate();
+                    if (coordbuffer.Mode == "Absolute")
+                    {
+                        Teleport(NetCoord);
+                    }
+                    if (coordbuffer.Mode == "Relative")
+                    {
+                        Teleport(CurrentCoord + NetCoord);
+                    }
+                    if (coordbuffer.Mode == "Polar")
+                    {
+                        NetCoord.X = (float)Math.Sin(CurrentCoord.Theta + coordbuffer.Theta) * coordbuffer.Rho + CurrentCoord.X;
+                        NetCoord.Y = (float)Math.Cos(CurrentCoord.Theta + coordbuffer.Theta) * coordbuffer.Rho + CurrentCoord.Y;
+                        NetCoord.Z = CurrentCoord.Z + NetCoord.Z;
+                        Teleport(NetCoord);
+                    }
                 }
                 catch { }
             }
         }
+
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
 
     }
 }
