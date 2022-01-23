@@ -72,7 +72,7 @@ namespace 自动进本
 
 		private void findnclick()
 		{
-			while (!Findpic(Resources.进本, click: true) )
+			while (Findpic(Resources.进本, click: true) != 1)
 			{
 				Thread.Sleep(3000);
 			}
@@ -82,19 +82,19 @@ namespace 自动进本
 			});
 		}
 
-		private bool Findpic(Bitmap subpic, bool click)
+		private int Findpic(Bitmap subpic, bool click)
 		{
 			int TargetX = 0;
 			int TargetY = 0;
 			long Elapsed = 0L;
 			scanner.SetSubPic(subpic);
-			bool num = scanner.Match(out TargetX, out TargetY, out Elapsed);
-			if (num == true && click)
+			int num = scanner.Match(out TargetX, out TargetY, out Elapsed);
+			if (num == 1 && click)
 			{
 				Mouse.LeftClick(GamehWnd, TargetX, TargetY);
 				return num;
 			}
-			if (num ==true && !click)
+			if (num == 1 && !click)
 			{
 				Mouse.MoveMouse(GamehWnd, TargetX, TargetY);
 				return num;

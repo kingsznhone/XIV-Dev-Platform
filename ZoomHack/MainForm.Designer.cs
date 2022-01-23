@@ -33,9 +33,9 @@
             this.ZoomUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.SetDefaultbtn = new System.Windows.Forms.Button();
-            this.POVUpDown = new System.Windows.Forms.NumericUpDown();
+            this.FOVUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.ZoomUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.POVUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FOVUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -92,28 +92,28 @@
             // 
             // POVUpDown
             // 
-            this.POVUpDown.BackColor = System.Drawing.Color.White;
-            this.POVUpDown.Location = new System.Drawing.Point(244, 122);
-            this.POVUpDown.Maximum = new decimal(new int[] {
+            this.FOVUpDown.BackColor = System.Drawing.Color.White;
+            this.FOVUpDown.Location = new System.Drawing.Point(244, 122);
+            this.FOVUpDown.Maximum = new decimal(new int[] {
             150,
             0,
             0,
             0});
-            this.POVUpDown.Minimum = new decimal(new int[] {
+            this.FOVUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.POVUpDown.Name = "POVUpDown";
-            this.POVUpDown.Size = new System.Drawing.Size(201, 33);
-            this.POVUpDown.TabIndex = 1;
-            this.POVUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.POVUpDown.Value = new decimal(new int[] {
+            this.FOVUpDown.Name = "POVUpDown";
+            this.FOVUpDown.Size = new System.Drawing.Size(201, 33);
+            this.FOVUpDown.TabIndex = 1;
+            this.FOVUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.FOVUpDown.Value = new decimal(new int[] {
             45,
             0,
             0,
             0});
-            this.POVUpDown.ValueChanged += new System.EventHandler(this.POVUpDown_ValueChanged);
+            this.FOVUpDown.ValueChanged += new System.EventHandler(this.FOVUpDown_ValueChanged);
             // 
             // MainForm
             // 
@@ -122,7 +122,7 @@
             this.ClientSize = new System.Drawing.Size(457, 181);
             this.Controls.Add(this.SetDefaultbtn);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.POVUpDown);
+            this.Controls.Add(this.FOVUpDown);
             this.Controls.Add(this.ZoomUpDown);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -135,7 +135,7 @@
             this.Text = "Zoom Assistant 【ZNH Industry™】";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.ZoomUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.POVUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FOVUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,7 +147,7 @@
         private System.Windows.Forms.NumericUpDown ZoomUpDown;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button SetDefaultbtn;
-        private System.Windows.Forms.NumericUpDown POVUpDown;
+        private System.Windows.Forms.NumericUpDown FOVUpDown;
     }
 }
 

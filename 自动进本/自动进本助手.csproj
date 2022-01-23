@@ -13,13 +13,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Keyboard">
-      <HintPath>D:\VS Project\XIV-Dev-Platform\Keyboard\bin\Debug\Keyboard.dll</HintPath>
-    </Reference>
-    <Reference Include="ProcessMemoryApi">
-      <HintPath>D:\VS Project\XIV-Dev-Platform\MemoryReader\bin\Debug\ProcessMemoryApi.dll</HintPath>
+      <HintPath>..\Keyboard\bin\Debug\Keyboard.dll</HintPath>
     </Reference>
     <Reference Include="ScreenSearchApi">
-      <HintPath>D:\VS Project\XIV-Dev-Platform\ScreenSearchApi\bin\Debug\net48\ScreenSearchApi.dll</HintPath>
+      <HintPath>..\ScreenSearchApi\bin\Debug\net48\ScreenSearchApi.dll</HintPath>
     </Reference>
     <Reference Include="System.Speech">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Speech\v4.0_4.0.0.0__31bf3856ad364e35\System.Speech.dll</HintPath>
